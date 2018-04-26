@@ -74,7 +74,7 @@ public class ProjectController {
 
     @GetMapping("/{id}/function")
     public ModelAndView detailFunction(@PathVariable("id") String id, User user) {
-        Project project = ServiceFactory.instance().getProject(id);
+        Project project = ProjectService.instance().getProject(id);
         AssertUtils.notNull(project, Message.PROJECT_NOT_FOUND);
         ServiceTool.checkUserIsOwner(project, user);
 
@@ -164,7 +164,7 @@ public class ProjectController {
 
     @GetMapping("/{id}/import")
     public ModelAndView baseImport(@PathVariable("id") String id, User user) {
-        Project project = ServiceFactory.instance().getProject(id);
+        Project project = ProjectService.instance().getProject(id);
         AssertUtils.notNull(project, Message.PROJECT_NOT_FOUND);
         ServiceTool.checkUserIsOwner(project, user);
         return new ModelAndView("/project/import")
