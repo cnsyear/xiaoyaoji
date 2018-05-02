@@ -1,152 +1,77 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div id="global-env">
-    <datalist id="headerlist">
-        <option v-for="item in flag.headers" :value="item">
-    </datalist>
-    <datalist id="requestlist">
-        <option v-for="item in flag.requests" :value="item">
-    </datalist>
-    <datalist id="responselist">
-        <option v-for="item in flag.responses" :value="item">
-    </datalist>
-
-    <div id="api-edit-details">
-        <div id="api-edit-content" class="form">
-            <!-- 请求头参数 -->
-            <p class="doc-item-section-title">全局请求头</p>
-            <div class="tab-content">
-                <div class="div-table">
-                    <ul class="div-table-header div-table-line cb">
-                        <li class="col-sm-1">操作</li>
-                        <li class="col-sm-3">参数名称</li>
-                        <li class="col-sm-2">是否必须</li>
-                        <li class="col-sm-2">默认值</li>
-                        <li class="col-sm-4">描述</li>
-                    </ul>
-                </div>
-                <div class="div-table editing div-editing-table">
-                    <request-headers-vue
-                            :name="'requestHeaders'"
-                            v-bind:request-headers.sync="global.http.requestHeaders"
-                            v-bind:editing="editing"></request-headers-vue>
-                </div>
-                <div class="item">
-                    <button class="btn btn-default btn-sm" v-on:click="newRow('requestHeaders')">
-                        <i class="iconfont icon-tianjia"></i>添加参数
-                    </button>
-                    <button class="btn btn-default btn-sm" v-on:click="importJSON('requestHeaders')">
-                        <i class="iconfont icon-importexport"></i>导入json
-                    </button>
+    <div class="http-environment">
+        <div class="cb">
+            <div class="col-sm-2">&nbsp;</div>
+            <div class="col-sm-3">变量</div>
+            <div class="col-sm-4">值</div>
+            <div class="col-sm-3">操作</div>
+        </div>
+        <div v-for="(item,index) in env">
+            <div class="cb">
+                <div class="col-sm-2">{{item.name}}</div>
+                <div class="col-sm-3">&nbsp;</div>
+                <div class="col-sm-4">&nbsp; </div>
+                <div class="col-sm-3">
+                    <i v-on:click.stop="envEdit(item)" style="padding-right: 5px" class="iconfont icon-edit"></i>
+                    <i v-on:click.stop="copyEnvironment(item)" style="padding-right: 5px" class="iconfont icon-copy"></i>
+                    <i v-on:click.stop="removeEnvironment(index)" style="padding-right: 5px" class="iconfont icon-close"></i>
                 </div>
             </div>
-
-            <!-- 请求参数 -->
-            <p class="doc-item-section-title">全局请求数据</p>
-            <div class="tab-content">
-                <div class="div-table">
-                    <ul class="div-table-header div-table-line cb">
-                        <li class="col-sm-1">操作</li>
-                        <li class="col-sm-3">参数名称</li>
-                        <li class="col-sm-2">是否必须</li>
-                        <li class="col-sm-2">类型</li>
-                        <li class="col-sm-2">默认值</li>
-                        <li class="col-sm-2">描述</li>
-                    </ul>
-                </div>
-                <div class="div-table editing div-editing-table">
-                    <request-args-vue :name="'requestArgs'"
-                                      v-bind:request-args.sync="global.http.requestArgs"
-                                      v-bind:editing="editing"></request-args-vue>
-                </div>
-                <div class="item">
-                    <button class="btn btn-default btn-sm" v-on:click="newRow('requestArgs')">
-                        <i class="iconfont icon-tianjia"></i>添加参数
-                    </button>
-                    <button class="btn btn-default btn-sm" v-on:click="importJSON('requestArgs')">
-                        <i class="iconfont icon-importexport"></i>导入json
-                    </button>
-                </div>
-            </div>
-
-            <!-- 请求头参数 -->
-            <p class="doc-item-section-title">全局响应头</p>
-            <div class="tab-content">
-                <div class="div-table">
-                    <ul class="div-table-header div-table-line cb">
-                        <li class="col-sm-1">操作</li>
-                        <li class="col-sm-3">参数名称</li>
-                        <li class="col-sm-2">是否必须</li>
-                        <li class="col-sm-6">描述</li>
-                    </ul>
-                </div>
-                <div class="div-table editing div-editing-table">
-                    <response-headers-vue :name="'responseHeaders'"
-                                          v-bind:response-headers.sync="global.http.responseHeaders"
-                                          v-bind:editing="editing"></response-headers-vue>
-                </div>
-                <div class="item">
-                    <button class="btn btn-default btn-sm" v-on:click="newRow('responseHeaders')">
-                        <i class="iconfont icon-tianjia"></i>添加参数
-                    </button>
-                    <button class="btn btn-default btn-sm" v-on:click="importJSON('responseHeaders')">
-                        <i class="iconfont icon-importexport"></i>导入json
-                    </button>
-                </div>
-            </div>
-
-            <!-- 响应参数 -->
-            <p class="doc-item-section-title">全局响应数据</p>
             <div>
-                <div class="div-table">
-                    <ul class="div-table-header div-table-line cb">
-                        <li class="col-sm-1">操作</li>
-                        <li class="col-sm-3">参数名称</li>
-                        <li class="col-sm-2">是否必须</li>
-                        <li class="col-sm-2">类型</li>
-                        <li class="col-sm-4">描述</li>
-                    </ul>
-                </div>
-                <div class="div-table editing div-editing-table">
-                    <response-args-vue v-bind:response-args="global.http.responseArgs" :name="'responseArgs'"
-                                       v-bind:editing="editing"></response-args-vue>
-                </div>
-                <div class="item">
-                    <button class="btn btn-default btn-sm" v-on:click="newRow('responseArgs')">
-                        <i class="iconfont icon-tianjia"></i>添加参数
-                    </button>
-                    <button class="btn btn-default btn-sm" v-on:click="importJSON('responseArgs')">
-                        <i class="iconfont icon-importexport"></i>导入json
-                    </button>
+                <div class="cb" v-for="v in item.vars">
+                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-3">{{v.name}} </div>
+                    <div class="col-sm-4">{{v.value}} </div>
+                    <div class="col-sm-3"></div>
                 </div>
             </div>
         </div>
+        <div>
+            <button class="btn btn-primary" v-on:click="createEnv">创建</button>
+        </div>
+
     </div>
-    <div class="modal" v-cloak v-if="importModal">
+
+    <!-- environment start -->
+    <div class="modal env-modal" v-cloak v-if="envModal">
         <div class="modal-header">
-            <i class="iconfont icon-close modal-close" v-on:click="importModal=false"></i>
+            <i class="iconfont icon-close modal-close" v-on:click="envModal=false"></i>
         </div>
         <div class="modal-content">
             <div class="modal-layout1 form" style="width: 500px">
-                <p class="title">导入JSON</p>
-                <textarea rows="15" class="k1 text" v-model="importValue" initial="off"
-                          v-bind:autofocus="importModal"
-                          tabindex="1" placeholder="请粘贴导入的数据"></textarea>
+                <p class="title" style="margin-bottom: 20px">添加新环境</p>
+                <div class="hint">
+                    环境变量运行在URL中,你可以配置多个(线上、灰度、开发)环境变量。在URL中使用方式{{flag.varname}},例：<br/>
+                    线上环境：prefix => http://www.xiaoyaoji.com.cn<br/>
+                    则<br/>
+                    请求URL：{{flag.prefix}}/hello => http://www.xiaoyaoji.cn/hello
+                </div>
+                <p class="title"></p>
+                <div class="item">
+                    <div class="col-sm-12">
+                        <input type="text" class="text" v-model="flag.tempEnv.name" placeholder="请输入环境名称">
+                    </div>
+                </div>
+                <div class="item" v-for="(item,index) in flag.tempEnv.vars">
+                    <div class="col-sm-5"><input type="text" v-model=item.name class="text" v-on:focus="envNewLine(index)" placeholder="变量名称" :value="item.name"></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="text" v-model="item.value" placeholder="变量值" :value="item.value">
+                    </div>
+                    <div class="col-sm-1 full-text">
+                        <i class="iconfont icon-close" v-if="flag.tempEnv.vars.length>1" v-on:click="flag.tempEnv.vars.splice(index,1)"></i>
+                    </div>
+                </div>
+
                 <div class="ta-c actions">
-                    <button class="btn btn-default-box middle" tabindex="3"
-                            v-on:click="importModal=false">
-                        取消
-                    </button>
+                    <button class="btn btn-default-box middle" tabindex="3" v-on:click="envModal=false">取消</button>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-primary middle" v-on:click="importOk" tabindex="2">确定</button>
+                    <button class="btn btn-primary middle" v-on:click="envSave" tabindex="2">确定</button>
                 </div>
             </div>
         </div>
     </div>
+    <!-- environment end -->
 </div>
-
-
-<jsp:include page="../includes/request-headers.jsp"/>
-<jsp:include page="../includes/request-args.jsp"/>
-<jsp:include page="../includes/response-headers.jsp"/>
-<jsp:include page="../includes/response-args.jsp"/>
+<script src="${ctx}/plugin/assets/${pluginInfo.id}/js/global-env.js"></script>

@@ -36,26 +36,23 @@ public class GlobalEnv implements Serializable {
         return id;
     }
 
-    public GlobalEnv setId(int id) {
+    public void setId(int id) {
         this.id = id;
-        return this;
     }
 
     public String getProjectId() {
         return projectId;
     }
 
-    public GlobalEnv setProjectId(String projectId) {
-        this.projectId = projectId;
-        return this;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId == null ? null : projectId.trim();
     }
 
     public String getContent() {
         return content;
     }
 
-    public GlobalEnv setContent(String content) {
-        this.content = content;
-        return this;
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 }

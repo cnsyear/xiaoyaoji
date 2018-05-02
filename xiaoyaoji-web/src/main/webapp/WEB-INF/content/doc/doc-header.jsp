@@ -54,9 +54,6 @@
                             <li v-on:click="sidebar('loadGlobal','http')">
                                 <div class="x-li"><a>全局参数</a></div>
                             </li>
-                            <li v-on:click="sidebar('loadGlobal','env')">
-                                <div class="x-li"><a>环境变量</a></div>
-                            </li>
                             <li v-on:click="sidebar('loadGlobal','status')">
                                 <div class="x-li"><a>全局状态</a></div>
                             </li>
@@ -184,12 +181,13 @@
     })();
 </script>
 <script>
+    xyj.page.global={};
     <c:forEach items="${projectGlobalData}" var="item">
-    <c:if test="${item.value}">
-        (function(){
-            xyj.page.global['${item.key.id}'] =${item.value};
-        })();
-    </c:if>
+        <c:if test="${item.value != null}">
+            (function(){
+                xyj.page.global['${item.key.id}'] =${item.value};
+            })();
+        </c:if>
     </c:forEach>
 </script>
 <c:forEach items="${projectGlobalData}" var="item">

@@ -78,7 +78,11 @@ public class GlobalEnvPlugin extends ProjectGlobalPlugin {
 
     @Override
     public String getJsonData(String projectId) {
-        return JsonUtils.toString(getByProjectId(projectId));
+        GlobalEnv temp = getByProjectId(projectId);
+        if(temp != null){
+            return JsonUtils.toString(temp.getContent());
+        }
+        return null;
     }
 
     @Override

@@ -4,10 +4,7 @@ import cn.xiaoyaoji.core.util.JsonUtils;
 import cn.xiaoyaoji.integration.cache.CacheProvider;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.DelayQueue;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  *
@@ -23,6 +20,21 @@ public class MemoryCacheProvider implements CacheProvider {
         dataMap = new ConcurrentHashMap<>();
     }
 
+    public MemoryCacheProvider(){
+        init();
+    }
+    private void init(){
+        Executors.newSingleThreadExecutor().execute(()->{
+           while (true){
+               try {
+                   Item item = queue.take();
+                   dataMap.remove(item.token);
+               } catch (InterruptedException e) {
+               }
+           }
+        });
+    }
+
     @Override
     public void put(String token, String key, Object data, int expires) {
         if (token == null) {
@@ -32,6 +44,8 @@ public class MemoryCacheProvider implements CacheProvider {
         if (value == null) {
             value = new Item(expires,token);
             dataMap.put(token, value);
+        }else{
+            value.setExpiresTime(expires);
         }
         if (!(data instanceof String)) {
             data = JsonUtils.toString(data);
