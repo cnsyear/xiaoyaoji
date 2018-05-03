@@ -56,13 +56,16 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-1 label" v-if="global.status.length>0">状态</div>
-                    <div class="col-sm-2" v-if="global.status.length>0">
-                        <select v-model="content.status" class="uk-select">
-                            <option :value="item.name" v-for="item in global.status"
-                                    v-bind:selected="item.name==content.status">{{item.name}}
-                            </option>
-                        </select>
+                    <div class="col-sm-1 label">状态</div>
+                    <div class="col-sm-2">
+                        <input type="text" class="uk-input" maxlength="10" placeholder="请选择状态"
+                               v-model="content.status" :value="content.status" list="http-status-list">
+                        <datalist id="http-status-list">
+                            <option value="有效"/>
+                            <option value="无效"/>
+                            <option value="启用"/>
+                            <option value="废弃"/>
+                        </datalist>
                     </div>
 
                 </div>

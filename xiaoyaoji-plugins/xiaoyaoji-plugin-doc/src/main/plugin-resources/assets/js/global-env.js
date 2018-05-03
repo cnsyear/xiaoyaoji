@@ -5,6 +5,7 @@
  */
 
 (function(){
+    var pluginId = 'cn.xiaoyaoji.plugin.global-env';
     requirejs(['vue','utils'],function(Vue,utils){
         var app =new Vue({
             el:'#global-env',
@@ -22,7 +23,7 @@
                 tempStatus:{}
             },
             created:function(){
-                var env = xyj.page.global['cn.xiaoyaoji.plugin.global-env'];
+                var env = xyj.page.global[pluginId];
                 if(!env){
                     env=[];
                 }else{
@@ -32,7 +33,7 @@
             },
             methods:{
                 update:function(){
-                    utils.post(xyj.ctx+'/plugin/req/cn.xiaoyaoji.plugin.global-env/update',{
+                    utils.post(xyj.ctx+'/plugin/req/'+pluginId+'/update',{
                         projectId:xyj.page.projectId,
                         content:JSON.stringify(this.env)
                     });

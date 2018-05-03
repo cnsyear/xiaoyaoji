@@ -26,39 +26,52 @@ import javax.servlet.http.HttpServletResponse;
  * 　　┗┓┓┏━┳┓┏┛
  * 　　　┃┫┫　┃┫┫
  * 　　　┗┻┛　┗┻┛
- * <p>
- * 环境变量
  *
  * @author zhoujingjie
- * Date 2018-04-04
+ * Date 2018-05-03
  */
-public class GlobalEnvPlugin extends ProjectGlobalPlugin {
-    private String tableName = "plugin_global_env";
+public class GlobalArgsPlugin extends ProjectGlobalPlugin {
+    private String tableName="plugin_global_args";
 
+    /**
+     * @return 编辑页面
+     */
+    @Override
+    public String getEditPage() {
+        return "global-args/edit.jsp";
+    }
+
+    /**
+     * @return 查看页面
+     */
+    @Override
+    public String getViewPage() {
+        return "global-args/view.jsp";
+    }
+
+    /**
+     * 插件初始化
+     */
     @Override
     public void init() {
-        if (!DataFactory.instance().checkTableExists(tableName)) {
-            createTable();
+        if(!DataFactory.instance().checkTableExists(tableName)){
+            DataFactory.instance().process((connection, qr) -> qr.update(connection,"CREATE TABLE "+tableName+" (\n" +
+                    "`id`  int NOT NULL AUTO_INCREMENT ,\n" +
+                    "`projectId`  char(12) NULL ,\n" +
+                    "`content`  varchar(10000) CHARACTER SET utf8 NULL DEFAULT '' COMMENT '内容，json格式' ,\n" +
+                    "PRIMARY KEY (`id`),\n" +
+                    "UNIQUE INDEX `projectId` (`projectId`) \n" +
+                    ")\n" +
+                    "DEFAULT CHARACTER SET=utf8\n" +
+                    "COMMENT='全局请求参数表'\n" +
+                    ";\n" +
+                    "\n"));
         }
     }
 
-    private void createTable() {
-        DataFactory.instance().process((connection, qr) -> {
-            return qr.update(connection, "CREATE TABLE " + tableName + " (\n" +
-                    "`id`  int NOT NULL AUTO_INCREMENT ,\n" +
-                    "`projectId`  char(12) CHARACTER SET utf8 NULL ,\n" +
-                    "`content`  varchar(10000) CHARACTER SET utf8 NULL ,\n" +
-                    "PRIMARY KEY (`id`),\n" +
-                    "UNIQUE INDEX `projectId` (`projectId`)  \n" +
-                    ")\n" +
-                    ";\n" +
-                    "\n");
-        });
-    }
-
-    private GlobalEnv getByProjectId(String projectId) {
+    private GlobalArgs getByProjectId(String projectId) {
         return DataFactory.instance().process((connection, qr) -> {
-            return qr.query(connection, "select id,projectId,content from " + tableName + " where projectId=?", new BeanHandler<>(GlobalEnv.class), projectId);
+            return qr.query(connection, "select id,projectId,content from " + tableName + " where projectId=?", new BeanHandler<>(GlobalArgs.class), projectId);
         });
     }
 
@@ -75,23 +88,18 @@ public class GlobalEnvPlugin extends ProjectGlobalPlugin {
         }
         throw new UnsupportedOperationException("不支持该地址" + path);
     }
-
+    /**
+     * 获取json数据
+     *
+     * @param projectId 项目id
+     * @return json数据
+     */
     @Override
     public String getJsonData(String projectId) {
-        GlobalEnv temp = getByProjectId(projectId);
+        GlobalArgs temp = getByProjectId(projectId);
         if(temp != null){
             return JsonUtils.toString(temp.getContent());
         }
         return null;
-    }
-
-    @Override
-    public String getEditPage() {
-        return "global-env/edit.jsp";
-    }
-
-    @Override
-    public String getViewPage() {
-        return "global-env/view.jsp";
     }
 }

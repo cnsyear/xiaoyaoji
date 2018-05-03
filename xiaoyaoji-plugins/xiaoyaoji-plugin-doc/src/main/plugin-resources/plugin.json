@@ -114,7 +114,25 @@
     "description": "项目全局环境变量",
     "author": "zhoujingjie",
     "createTime": "2018/04/04",
-    "version": "2.1.6",
+    "version": "2.3.0",
+    "events": [
+      "projectGlobal"
+    ],
+    "icon": {
+      "icon32x32": ""
+    },
+    "dependency": {
+      "min": "2.3.0"
+    }
+  },
+  {
+    "id": "cn.xiaoyaoji.plugin.global-args",
+    "name": "请求参数",
+    "clazz": "cn.xiaoyaoji.plugin.doc.global.GlobalArgsPlugin",
+    "description": "项目全局请求参数",
+    "author": "zhoujingjie",
+    "createTime": "2018/05/03",
+    "version": "2.3.0",
     "events": [
       "projectGlobal"
     ],
