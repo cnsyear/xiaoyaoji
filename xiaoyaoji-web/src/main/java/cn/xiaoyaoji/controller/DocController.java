@@ -159,6 +159,8 @@ public class DocController {
         } else {
             doc = DocService.instance().getDoc(docId);
         }
+
+        //todo 改为从数据库查询
         Map<Event, List<PluginInfo>> map = ProjectPluginManager.getInstance().getProjectPluginInfoMap(doc.getProjectId());
         map.putAll(PluginManager.getInstance().getPluginInfos());
 
