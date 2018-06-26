@@ -23,17 +23,20 @@
                 <template v-if="item.type &&( item.type=='object' || item.type.indexOf('array')!=-1)">
                     <i class="iconfont icon-my open" v-on:click="apiArgsColumnFold($event)"></i>
                 </template>
-                <div class="value">{{item.name}}</div>
-                <div class="hover name">{{item.name}}</div>
+                <div class="w-block">
+                    <div class="w-item">{{item.name}}</div>
+                </div>
             </li>
             <li class="col-sm-1">&nbsp;{{item.require || 'false' }} </li>
             <li class="col-sm-2" :title="item.defaultValue">
-                <div class="value">{{item.defaultValue}}</div>
-                <div class="hover">{{item.defaultValue}}</div>
+                <div class="w-block">
+                    <div class="w-item">{{item.defaultValue}}</div>
+                </div>
             </li>
             <li class="col-sm-7 full-height" :title="item.description">
-                <div class="value">{{item.description}}</div>
-                <div class="hover description">{{item.description}}</div>
+                <div class="w-block">
+                    <div class="w-item">{{item.description}}</div>
+                </div>
             </li>
         </ul>
         </div>

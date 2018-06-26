@@ -13,7 +13,7 @@
         list-style:disc;
     }
 </style>
-<div id="md-view-html"></div>
+<div class="normal" id="md-view-html"></div>
 <script>
     (function(){
         requirejs(['${cdn}/assets/simplemd/marked.min.js?v=${pluginInfo.version}'],function(marked){

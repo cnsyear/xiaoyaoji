@@ -1,6 +1,7 @@
 package cn.com.xiaoyaoji.resolver;
 
 import cn.com.xiaoyaoji.core.annotations.Ignore;
+import cn.com.xiaoyaoji.core.exception.NotLoginException;
 import cn.com.xiaoyaoji.data.bean.User;
 import cn.com.xiaoyaoji.core.common.Constants;
 import cn.com.xiaoyaoji.util.CacheUtils;
@@ -56,6 +57,6 @@ public class UserArgumentsResolver implements HandlerMethodArgumentResolver {
         if(parameter.getMethod().getClass().getAnnotation(Ignore.class) != null){
             return null;
         }
-        throw new MissingServletRequestParameterException("user","User");
+        throw new NotLoginException("会话超时");
     }
 }

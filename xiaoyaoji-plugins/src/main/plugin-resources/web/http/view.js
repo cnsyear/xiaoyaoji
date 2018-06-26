@@ -1,12 +1,13 @@
 requirejs(['utils', 'vue',
     x.cdn + '/assets/jsonformat/jsonFormater.js',
     x.cdn + '/assets/clipboard/clipboard.min.js',
-    ctx+'/proxy/'+pluginId + '/assets/js/chrome-extension.js',
+    ctx + '/proxy/' + pluginId + '/assets/js/chrome-extension.js',
     x.cdn + '/assets/ace/src-min/ace.js',
     x.cdn + '/assets/xml2json/2json.js',
     x.cdn + '/assets/xml2json/2xml.js'
 ], function (utils, Vue, xxx, Clipboard, Plugin) {
     var xml = new XML.ObjTree();
+
     //请求头
     function getRequestHeaders() {
         var headers = {};
@@ -60,8 +61,8 @@ requirejs(['utils', 'vue',
     function Result() {
         var jf = new JsonFormater({
             dom: '#api-result',
-            imgCollapsed: x.cdn+'/assets/jsonformat/images/Collapsed.gif',
-            imgExpanded: x.cdn+'/assets/jsonformat/images/Expanded.gif'
+            imgCollapsed: x.cdn + '/assets/jsonformat/images/Collapsed.gif',
+            imgExpanded: x.cdn + '/assets/jsonformat/images/Expanded.gif'
         });
         var fn = {
             JSON: function (data) {
@@ -113,6 +114,15 @@ requirejs(['utils', 'vue',
                 localStorage.setItem(key, value);
             }
         }
+        //处理为空的数据
+        if (this.doNotSendWhenEmpty && args) {
+            for (var key in args) {
+                if (!args[key]) {
+                    delete args[key];
+                }
+            }
+        }
+
         //如果是图片或二进制
         if (this.content.contentType === "IMAGE" || this.content.contentType === 'BINARY') {
             window.open(url + '?' + utils.args2Params(args));
@@ -132,8 +142,8 @@ requirejs(['utils', 'vue',
                 localStorage.setItem(key, value);
             }
         }
-        if(!(url.indexOf('http://') || url.indexOf('https://'))){
-            url = 'http://'+url;
+        if (!(url.indexOf('http://') || url.indexOf('https://'))) {
+            url = 'http://' + url;
         }
 
         var params = {
@@ -194,7 +204,7 @@ requirejs(['utils', 'vue',
                 params.processData = false;
                 var data = params.data;
                 //插件时用
-                params.tempdata=data;
+                params.tempdata = data;
                 var fd = new FormData();
                 for (var key in data) {
                     var value = data[key];
@@ -267,8 +277,8 @@ requirejs(['utils', 'vue',
             Plugin.complete = params['complete'];
             Plugin.success = params['success'];
             Plugin.error = params['error'];
-            if(params.tempdata){
-                params.data=params.tempdata;
+            if (params.tempdata) {
+                params.data = params.tempdata;
                 delete params['tempdata'];
             }
             delete params['complete'];
@@ -306,7 +316,7 @@ requirejs(['utils', 'vue',
 
     //初始化请求头
     function initFormHeaders() {
-        var headers = this.content.ignoreGHttpReqHeaders?this.content.requestHeaders:this.global.http.requestHeaders.mergeArray(this.content.requestHeaders);
+        var headers = this.content.ignoreGHttpReqHeaders ? this.content.requestHeaders : this.global.http.requestHeaders.mergeArray(this.content.requestHeaders);
         for (var key in headers) {
             var temp = this.doc.id + ':headers:' + headers[key].name;
             var value = localStorage.getItem(temp);
@@ -347,6 +357,7 @@ requirejs(['utils', 'vue',
             apiLoading: false,
             resultActive: 'content',
             currentEnv: null,
+            doNotSendWhenEmpty: false,
             formHeaders: [],
             formArgs: [],
             urlArgs: [],
@@ -373,6 +384,13 @@ requirejs(['utils', 'vue',
                     self.hasXyjPlugin = true;
                 }
             });
+
+            this.doNotSendWhenEmpty = localStorage.getItem("doc.doNotSendWhenEmpty") || false;
+        },
+        watch: {
+            doNotSendWhenEmpty: function (value) {
+                localStorage.setItem("doc.doNotSendWhenEmpty", value);
+            }
         },
         created: function () {
             this.content = utils.toJSON(doc.content);
@@ -419,16 +437,16 @@ requirejs(['utils', 'vue',
             this.global = g;
             new Clipboard('.content-copy');
 
-            var temp = localStorage.getItem(_projectId_+"_currentEnv");
-            if(temp){
+            var temp = localStorage.getItem(_projectId_ + "_currentEnv");
+            if (temp) {
                 this.currentEnv = JSON.parse(temp);
-            }else{
+            } else {
                 this.currentEnv = g.environment[0] || {};
             }
 
             initUrlArgs.call(this);
-            window.content =this.content;
-            window.urlArgs =this.urlArgs;
+            window.content = this.content;
+            window.urlArgs = this.urlArgs;
 
             initFormHeaders.call(this);
             initFormArgs.call(this);
@@ -438,7 +456,7 @@ requirejs(['utils', 'vue',
             requestURL: {
                 get: function () {
                     console.log('requestURL');
-                    var urlArgs= this.urlArgs;
+                    var urlArgs = this.urlArgs;
                     var temp = this.content.url;
                     if (!temp) {
                         temp = ''
@@ -464,7 +482,7 @@ requirejs(['utils', 'vue',
 
                     return temp;
                 },
-                set:function(v){
+                set: function (v) {
                     console.log(v)
                 }
             },
@@ -486,7 +504,7 @@ requirejs(['utils', 'vue',
         methods: {
             loadAttach: function () {
                 var self = this;
-                utils.get('/attach/' + this.doc.id, {projectId:_projectId_}, function (rs) {
+                utils.get('/attach/' + this.doc.id, {projectId: _projectId_}, function (rs) {
                     self.attachs = rs.data.attachs || [];
                     self.fileAccess = rs.data.fileAccess || '';
                 });
@@ -511,9 +529,9 @@ requirejs(['utils', 'vue',
                 win.document.write(utils.unescape(this.result.content));
                 win.document.close();
             },
-            changeEnv:function(item){
-                this.currentEnv=item;
-                localStorage.setItem(_projectId_+"_currentEnv",JSON.stringify(item))
+            changeEnv: function (item) {
+                this.currentEnv = item;
+                localStorage.setItem(_projectId_ + "_currentEnv", JSON.stringify(item))
             }
         }
     });
@@ -553,47 +571,47 @@ requirejs(['utils', 'vue',
     }
 
     function getRequestArgsObject(data) {
-        if(!(data && data.forEach)){
+        if (!(data && data.forEach)) {
             return '';
         }
         var obj = {};
         data.forEach(function (d) {
             var name = d.name;
-                switch (d.type) {
-                    case 'string':
-                        obj[name] = d.testValue || d.defaultValue || '';
-                        break;
-                    case 'number':
-                        obj[name] = d.testValue || d.defaultValue || 0;
-                        break;
-                    case 'boolean':
-                        obj[name] = d.testValue || d.defaultValue || true;
-                        break;
-                    case 'object':
-                        obj[name] = getRequestArgsObject(d.children);
-                        break;
-                    case 'array':
-                        obj[name] = [];
-                        break;
-                    case 'array[number]':
-                        obj[name] = [0, 1];
-                        break;
-                    case 'array[boolean]':
-                        obj[name] = [true];
-                        break;
-                    case 'array[string]':
-                        obj[name] = [''];
-                        break;
-                    case 'array[object]':
-                        obj[name] = [getRequestArgsObject(d.children)];
-                        break;
-                    case 'array[array]':
-                        obj[name] = [[]];
-                        break;
-                    default:
-                        obj[name] = '';
-                        break;
-                }
+            switch (d.type) {
+                case 'string':
+                    obj[name] = d.testValue || d.defaultValue || '';
+                    break;
+                case 'number':
+                    obj[name] = d.testValue || d.defaultValue || 0;
+                    break;
+                case 'boolean':
+                    obj[name] = d.testValue || d.defaultValue || true;
+                    break;
+                case 'object':
+                    obj[name] = getRequestArgsObject(d.children);
+                    break;
+                case 'array':
+                    obj[name] = [];
+                    break;
+                case 'array[number]':
+                    obj[name] = [0, 1];
+                    break;
+                case 'array[boolean]':
+                    obj[name] = [true];
+                    break;
+                case 'array[string]':
+                    obj[name] = [''];
+                    break;
+                case 'array[object]':
+                    obj[name] = [getRequestArgsObject(d.children)];
+                    break;
+                case 'array[array]':
+                    obj[name] = [[]];
+                    break;
+                default:
+                    obj[name] = '';
+                    break;
+            }
         });
         return obj;
     }

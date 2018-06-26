@@ -20,6 +20,5 @@
     if(request.getAttribute("fn") == null) {
         request.setAttribute("fn", new JspFn(request));
     }
-
     request.setAttribute("cdn",request.getContextPath());
 %>

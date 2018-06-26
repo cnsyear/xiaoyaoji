@@ -62,12 +62,12 @@ nav ul{
 }
 nav ul li{
     float: left;
-    font-size: 20px;
-    margin-right: 50px;
+    font-size: 18px;
+    margin-right: 25px;
 }
 
 .m-sec1,.api-sec1{
-    background: #0f6ecd url("http://f1.xiaoyaoji.cn/assets/img/header.png") no-repeat center;
+    background: #0f6ecd url("../img/header.jpeg") no-repeat center;
     background-size:cover ;
     padding: 180px 0;
 }

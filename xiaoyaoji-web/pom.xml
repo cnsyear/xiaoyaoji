@@ -78,7 +78,7 @@
         <profile>
             <id>prod</id>
             <properties>
-                <xyj.version>2.1.5</xyj.version>
+                <xyj.version>2.1.63</xyj.version>
                 <druid.username>admin</druid.username>
                 <druid.password>123</druid.password>
             </properties>
@@ -96,11 +96,6 @@
                             <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
                             <warSourceDirectory>src/main/webapp</warSourceDirectory>
                             <webResources>
-                                <resource>
-                                    <directory>configuration/includes</directory>
-                                    <targetPath>WEB-INF/includes</targetPath>
-                                    <filtering>true</filtering>
-                                </resource>
                                 <resource>
                                     <directory>src/main/webapp</directory>
                                     <filtering>true</filtering>

@@ -6,6 +6,16 @@
         }
         var app = new Vue({
             el:'#xd-header',
+            data:{
+                pages:[]
+            },
+            mounted:function(){
+                $.get('http://www.xiaoyaoji.cn/test/pages.json?_t='+Date.now(),function(rs){
+                    if(rs.code==0){
+                        app.pages=rs.data;
+                    }
+                })
+            },
             methods:{
                 sidebar:function(method){
                     var newArgs=[];

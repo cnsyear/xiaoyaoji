@@ -240,7 +240,9 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <p class="doc-item-section-title second">请求参数</p>
+                                <p class="doc-item-section-title second">请求参数<label style="font-size: 12px;padding-left: 10px;color: #666">
+                                    <input v-model="doNotSendWhenEmpty" type="checkbox"/>数据为空不发
+                                </label></p>
                                 <div class="item"  v-for="(item,index) in formArgs">
                                     <div class="col-sm-2 label">{{item.name}}</div>
                                     <div class="col-sm-8" v-bind:class="{'full-text':item.type=='file'}">

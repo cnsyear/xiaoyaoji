@@ -4,8 +4,12 @@ import cn.com.xiaoyaoji.core.util.JsonUtils;
 import cn.com.xiaoyaoji.integration.cache.CacheProvider;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.DelayQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhoujingjie
@@ -13,36 +17,55 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryCacheProvider implements CacheProvider {
     private static Map<String, Value> dataMap;
+
     static {
         dataMap = new ConcurrentHashMap<>();
+        clearWithInterval();
+    }
+
+    /**
+     * 定期检查失效的数据 10分钟一次
+     */
+    private static void clearWithInterval() {
+        int delay = 10;
+        Executors.newScheduledThreadPool(1).scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                for(Iterator<Map.Entry<String,Value>> it = dataMap.entrySet().iterator(); it.hasNext();){
+                    Map.Entry<String, Value> entry = it.next();
+                    if(entry.getValue().getExpires().getTime()<System.currentTimeMillis()){
+                        it.remove();
+                    }
+                }
+            }
+        }, delay, delay, TimeUnit.MINUTES);
     }
 
     public void put(String token, String key, Object data, int expires) {
-        if(token == null)
+        if (token == null) {
             return;
+        }
         Value value = dataMap.get(token);
         if (value == null) {
             value = new Value();
             dataMap.put(token, value);
         }
-        if(!(data instanceof String)){
+        if (!(data instanceof String)) {
             data = JsonUtils.toString(data);
         }
-        value.setExpires(new Date(new Date().getTime() + expires * 1000));
-        value.putData(key,data);
+        value.setExpires(new Date(System.currentTimeMillis() + expires * 1000));
+        value.putData(key, data);
     }
 
     public Object get(String token, String key, int expires) {
-        if(token == null)
-            return null;
-        Value value = dataMap.get(token);
-        if (value == null)
-            return null;
-        if (value.getExpires().getTime() < System.currentTimeMillis()) {
-            dataMap.remove(token);
+        if (token == null) {
             return null;
         }
-        value.setExpires(new Date(new Date().getTime() + expires * 1000));
+        Value value = dataMap.get(token);
+        if (value == null) {
+            return null;
+        }
+        value.setExpires(new Date(System.currentTimeMillis() + expires * 1000));
         return value.getData(key);
     }
 
@@ -54,7 +77,7 @@ public class MemoryCacheProvider implements CacheProvider {
     @Override
     public void remove(String table, String key) {
         Value value = dataMap.get(table);
-        if(value == null)
+        if (value == null)
             return;
         value.remove(key);
     }
@@ -75,7 +98,7 @@ public class MemoryCacheProvider implements CacheProvider {
             data.put(key, value);
         }
 
-        public void remove(String key){
+        public void remove(String key) {
             data.remove(key);
         }
 
