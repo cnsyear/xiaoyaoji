@@ -5,12 +5,11 @@
     <parent>
         <artifactId>xiaoyaoji</artifactId>
         <groupId>cn.com.xiaoyaoji</groupId>
-        <version>2.1.6</version>
+        <version>2.1.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
     <artifactId>xiaoyaoji-web</artifactId>
-
 
 
     <dependencies>
@@ -78,7 +77,7 @@
         <profile>
             <id>prod</id>
             <properties>
-                <xyj.version>2.1.63</xyj.version>
+                <xyj.version>${project.version}</xyj.version>
                 <druid.username>admin</druid.username>
                 <druid.password>123</druid.password>
             </properties>

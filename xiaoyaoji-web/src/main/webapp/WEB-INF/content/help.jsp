@@ -35,29 +35,6 @@
         </p>
     </div>
     <br/>
-    <h3>如果是用restful</h3>
-
-    <br/>
-    <h3>如果有其他问题,请在下方留言</h3>       <br/>
-
-    <!-- 代码1：放在页面需要展示的位置  -->
-    <!-- 如果您配置过sourceid，建议在div标签中配置sourceid、cid(分类id)，没有请忽略  -->
-    <div id="cyReward" role="cylabs" class="ta-c" data-use="reward"></div>
-    <!-- 代码2：用来读取评论框配置，此代码需放置在代码1之后。 -->
-    <!-- 如果当前页面有评论框，代码2请勿放置在评论框代码之前。 -->
-    <!-- 如果页面同时使用多个实验室项目，以下代码只需要引入一次，只配置上面的div标签即可 -->
-    <script type="text/javascript" charset="utf-8" src="http://changyan.itc.cn/js/lib/jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="https://changyan.sohu.com/js/changyan.labs.https.js?appid=cysoLfgbC"></script>
-
-    <!--PC版-->
-    <div id="SOHUCS" sid="help"></div>
-    <script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
-    <script type="text/javascript">
-        window.changyan.api.config({
-            appid: 'cysoLfgbC',
-            conf: 'prod_4ca963426a979bab54acc704545f436d'
-        });
-    </script>
 </div>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
