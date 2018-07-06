@@ -97,11 +97,13 @@
         function checkId(arr){
             if(arr && arr.length>0){
                 arr.forEach(function(item){
-                    if(!item.id){
-                        item.id = utils.generateUID();
-                    }
-                    if(item.children && item.children.length>0){
-                        checkId(item.children);
+                    if(item){
+                        if(!item.id){
+                            item.id = utils.generateUID();
+                        }
+                        if(item.children && item.children.length>0){
+                            checkId(item.children);
+                        }
                     }
                 });
             }
