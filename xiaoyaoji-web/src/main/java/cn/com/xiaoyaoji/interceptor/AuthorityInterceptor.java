@@ -26,12 +26,6 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
-        HandlerMethod method = (HandlerMethod) handler;
-        if (method.getMethod().getAnnotation(Ignore.class) != null) {
-            return true;
-        }
-        if (method.getMethod().getDeclaringClass().getAnnotation(Ignore.class) != null)
-            return true;
         User user = (User) request.getSession().getAttribute("user");
         if(user != null){
             return true;
@@ -48,6 +42,14 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                 }
             }
         }
+
+        HandlerMethod method = (HandlerMethod) handler;
+        if (method.getMethod().getAnnotation(Ignore.class) != null) {
+            return true;
+        }
+        if (method.getMethod().getDeclaringClass().getAnnotation(Ignore.class) != null)
+            return true;
+
         throw new NotLoginException();
     }
 
