@@ -18,7 +18,7 @@ import java.util.TimerTask;
  * @author zhoujingjie
  *         created on 2017/8/29
  */
-public class SiteMapTask extends TimerTask {
+public class SiteMapTask implements Runnable {
     private static Logger logger = LoggerFactory.getLogger(SiteMapTask.class);
     private ServletContext servletContext;
 
@@ -40,7 +40,7 @@ public class SiteMapTask extends TimerTask {
         }
         //每天凌晨1点执行
         Date oclock1 = getClock(1);
-        ScheduleManager.schdule(instance,oclock1,24*60*60*1000);
+        ScheduleManager.schedule(instance,oclock1,24*60*60*1000);
 
     }
 

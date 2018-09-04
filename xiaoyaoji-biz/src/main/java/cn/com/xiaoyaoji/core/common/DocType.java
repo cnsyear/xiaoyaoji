@@ -23,7 +23,10 @@ public enum  DocType {
     SYS_THIRDPARTY("sys.thirdparty"),
 
     //文件夹
-    SYS_FOLDER("sys.folder");
+    SYS_FOLDER("sys.folder"),
+
+    //快捷方式
+    SYS_SHORT_CUT("sys.shortcut");
 
     private String typeName;
     DocType(String typeName) {

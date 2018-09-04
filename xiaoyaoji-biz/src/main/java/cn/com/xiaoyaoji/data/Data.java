@@ -119,5 +119,7 @@ public interface Data {
 
     List<String> getAllProjectValidIds();
 
+    List<String> getDocIdsByNums(int num);
 
+    void deleteDocHistoryThanNum(int num, String docId);
 }

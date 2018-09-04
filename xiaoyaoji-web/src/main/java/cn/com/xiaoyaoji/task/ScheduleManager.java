@@ -6,25 +6,33 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhoujingjie
  *         created on 2017/8/29
  */
 public class ScheduleManager {
-    private static Timer timer;
+    private static ScheduledExecutorService scheduledExecutorService;
     private static Logger logger = LoggerFactory.getLogger(ScheduleManager.class);
 
     static {
-        timer = new Timer("task_thread", true);
+        scheduledExecutorService = Executors.newScheduledThreadPool(2);
+
     }
 
-    public static void schdule(TimerTask timerTask, Date first, long period) {
-        timer.schedule(timerTask, first, period);
+    public static void schedule(Runnable runnable, Date first, long period) {
+        schedule(runnable,first.getTime()-System.currentTimeMillis(),period);
+    }
+    public static void schedule(Runnable runnable, long delay, long period) {
+        scheduledExecutorService.scheduleWithFixedDelay(runnable, delay, period, TimeUnit.MILLISECONDS);
     }
 
-    public static void shutdown(){
-        timer.cancel();
+
+    public static void shutdown() {
+        scheduledExecutorService.shutdownNow();
     }
 
 

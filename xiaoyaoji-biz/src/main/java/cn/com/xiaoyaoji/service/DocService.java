@@ -165,4 +165,12 @@ public class DocService {
     public List<Doc> getDocsByParentId(String projectId, String parentId) {
         return ResultUtils.list(DataFactory.instance().getDocsByParentId(projectId,parentId));
     }
+
+    public List<String> getRatherThanNumsDocIds(int num) {
+        return ResultUtils.list(DataFactory.instance().getDocIdsByNums(num));
+    }
+
+    public void deleteDocHistoryThanNum(int num, String docId) {
+        DataFactory.instance().deleteDocHistoryThanNum(num,docId);
+    }
 }

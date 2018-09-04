@@ -114,6 +114,9 @@
         <li uk-toggle="target:#docCopyModal">
             <div class="dl-menu-name">复制</div>
         </li>
+        <li uk-toggle="target:#docShortcutModal">
+            <div class="dl-menu-name">软链接</div>
+        </li>
         <li v-on:click="updateName($event)" uk-toggle="target: #docCreateModal">
             <div class="dl-menu-name">重命名</div>
         </li>
@@ -135,6 +138,28 @@
                 <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
                 <button class="uk-button uk-button-primary" v-on:click="createSubmit">{{createModal.id?'更新':'创建'}}
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div uk-modal id="docShortcutModal" v-cloak>
+        <div class="uk-modal-dialog">
+            <div class="uk-modal-body">
+                <form class="uk-form-stacked">
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-shortcut-select">选择一个项目(destination)</label>
+                        <div class="uk-form-controls">
+                            <select class="uk-select" id="form-shortcut-select" v-model="copiesProjectId">
+                                <option v-for="item in projects" v-bind:value="item.id">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="uk-modal-footer uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+                <button class="uk-button uk-button-primary" v-on:click="createShortcut">创建</button>
             </div>
         </div>
     </div>

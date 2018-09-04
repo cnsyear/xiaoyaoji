@@ -198,6 +198,16 @@ $(function(){
                         })
                     });
                 },
+                createShortcut:function(){
+                    var self = this;
+                    utils.post('/doc/shortcut',{
+                        docId:self.target.id,
+                        projectId:_projectId_,
+                        toProjectId:self.copiesProjectId
+                    },function(){
+                        location.reload();
+                    });
+                },
                 search:function(){
                     var text= this.searchText;
                     if(text){
