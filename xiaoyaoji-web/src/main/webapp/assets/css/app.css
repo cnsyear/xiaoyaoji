@@ -449,11 +449,23 @@ input,textarea{
     overflow: hidden;
     padding: 0;
 }
-.div-table.editing .input .text{
-    border-color: transparent;
+.div-table.editing .input:hover{
+    overflow: inherit;
 }
-.div-table.editing .in-text{
-
+.div-table.editing .input .text{
+    border:none;
+    background: none;
+    user-modify: read-write-plaintext-only;
+    -webkit-user-modify: read-write-plaintext-only;
+    -moz-user-modify: read-write-plaintext-only;
+}
+.div-table.editing .input .rich-text{
+    outline: none;
+}
+.div-table.editing .input .rich-text:focus,.div-table.editing .input:hover .rich-text{
+    background: #fff;
+    position: absolute;
+    z-index: 1;
 }
 .div-table-line .name{
     padding-left: 10px;

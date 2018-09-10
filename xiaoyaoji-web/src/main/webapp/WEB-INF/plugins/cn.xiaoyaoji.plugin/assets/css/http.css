@@ -9,6 +9,13 @@
     font-weight: bold;
     margin:15px 0 5px 0;
 }
+.doc .doc-item-section-title-li{
+    font-size: 14px;
+    font-weight: bold;
+}
+.doc .doc-item-section-title-li a{
+    color: #000;
+}
 .doc .doc-item-section{
     line-height: 25px;
 }

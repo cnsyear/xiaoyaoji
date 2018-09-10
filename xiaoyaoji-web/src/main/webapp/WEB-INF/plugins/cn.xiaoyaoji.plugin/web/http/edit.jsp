@@ -20,7 +20,8 @@
                 <div class="item">
                     <div class="col-sm-1 label">请求方法</div>
                     <div class="col-sm-2">
-                        <select v-model="content.requestMethod" class="uk-select">
+                        <input type="text" :value="content.requestMethod" v-model="content.requestMethod" list="requestMethodList" class="uk-input" placeholder="请输入请求方法">
+                        <%--<select v-model="content.requestMethod" class="uk-select">
                             <option value="GET">GET</option>
                             <option value="POST">POST</option>
                             <option value="PUT">PUT</option>
@@ -28,7 +29,16 @@
                             <option value="PATCH">PATCH</option>
                             <option value="COPY">COPY</option>
                             <option value="OPTIONS">OPTIONS</option>
-                        </select>
+                        </select>--%>
+                        <datalist id="requestMethodList">
+                            <option value="GET"></option>
+                            <option value="POST"></option>
+                            <option value="PUT"></option>
+                            <option value="DELETE"></option>
+                            <option value="PATCH"></option>
+                            <option value="COPY"></option>
+                            <option value="OPTIONS"></option>
+                        </datalist>
                     </div>
                     <div class="col-sm-1 label">请求数据类型</div>
                     <div class="col-sm-2">
@@ -45,7 +55,8 @@
                     </div>
                     <div class="col-sm-1 label">响应类型</div>
                     <div class="col-sm-2">
-                        <select v-model="content.contentType" class="uk-select">
+                        <input type="text" :value="content.contentType" v-model="content.contentType" list="contentTypeList" class="uk-input" placeholder="请输入输入响应类型">
+                        <%--<select v-model="content.contentType" class="uk-select">
                             <option value="JSON">JSON</option>
                             <option value="JSONP">JSONP</option>
                             <option value="TEXT">TEXT</option>
@@ -53,18 +64,27 @@
                             <option value="HTML">HTML</option>
                             <option value="IMAGE">IMAGE</option>
                             <option value="BINARY">BINARY</option>
-                        </select>
+                        </select>--%>
+                        <datalist id="contentTypeList">
+                            <option value="JSON"></option>
+                            <option value="JSONP"></option>
+                            <option value="TEXT"></option>
+                            <option value="XML"></option>
+                            <option value="HTML"></option>
+                            <option value="IMAGE"></option>
+                            <option value="BINARY"></option>
+                        </datalist>
                     </div>
 
                     <div class="col-sm-1 label" v-if="global.status.length>0">状态</div>
                     <div class="col-sm-2" v-if="global.status.length>0">
-                        <select v-model="content.status" class="uk-select">
-                            <option :value="item.name" v-for="item in global.status"
-                                    v-bind:selected="item.name==content.status">{{item.name}}
-                            </option>
-                        </select>
+                        <input type="text" :value="content.status" v-model="content.status" list="statusList" class="uk-input" placeholder="请输入输入状态">
                     </div>
-
+                    <datalist id="statusList">
+                        <option>有效</option>
+                        <option>开发中</option>
+                        <option>已废弃</option>
+                    </datalist>
                 </div>
 
                 <div class="item">
@@ -95,30 +115,30 @@
                     </div>
                 </div>
                 <div class="item">
-                    <label class="col-sm-1 label" for="ignoreGHttpReqArgs">忽略全局请求参数</label>
-                    <div class="col-sm-1 label-content">
-                        <input type="checkbox" class="uk-checkbox" id="ignoreGHttpReqArgs"
+                    <div class="col-sm-2 label-content">
+                        <label>
+                        <input type="checkbox" class="uk-checkbox"
                                v-model="content.ignoreGHttpReqArgs">
+                            忽略全局请求参数</label>
                     </div>
-                    <label class="col-sm-2 label" for="ignoreGHttpReqHeaders">忽略全局请求头</label>
-                    <div class="col-sm-1 label-content">
-                        <input type="checkbox" class="uk-checkbox" id="ignoreGHttpReqHeaders"
+                    <div class="col-sm-2 label-content">
+                        <label>
+                        <input type="checkbox" class="uk-checkbox"
                                v-model="content.ignoreGHttpReqHeaders">
+                            忽略全局请求头</label>
                     </div>
-                    <label class="col-sm-2 label" for="ignoreGHttpRespHeaders">忽略全局响应头</label>
-                    <div class="col-sm-1 label-content">
-                        <input type="checkbox" class="uk-checkbox" id="ignoreGHttpRespHeaders"
+                    <div class="col-sm-2 label-content">
+                        <label>
+                        <input type="checkbox" class="uk-checkbox"
                                v-model="content.ignoreGHttpRespHeaders">
+                            忽略全局响应头</label>
                     </div>
-                    <label class="col-sm-2 label" for="ignoreGHttpRespArgs">忽略全局响应参数</label>
-                    <div class="col-sm-1 label-content">
-                        <input type="checkbox" class="uk-checkbox" id="ignoreGHttpRespArgs"
-                               v-model="content.ignoreGHttpRespArgs">
+                    <div class="col-sm-4 label-content">
+                        <label>
+                        <input type="checkbox" class="uk-checkbox" v-model="content.ignoreGHttpRespArgs">
+                            忽略全局响应参数</label>
                     </div>
-
                 </div>
-
-
                 <div>
                     <ul uk-tab>
                         <li v-on:click="flag.tab='header'"><a>请求头(Header)</a></li>
@@ -130,9 +150,9 @@
                             <ul class="div-table-header div-table-line cb">
                                 <li class="col-sm-1">操作</li>
                                 <li class="col-sm-3">参数名称</li>
-                                <li class="col-sm-2">是否必须</li>
+                                <li class="col-sm-1">是否必须</li>
                                 <li class="col-sm-2">默认值</li>
-                                <li class="col-sm-4">描述</li>
+                                <li class="col-sm-5">描述</li>
                             </ul>
                         </div>
                         <div class="div-table editing div-editing-table">
@@ -155,10 +175,10 @@
                             <ul class="div-table-header div-table-line cb">
                                 <li class="col-sm-1">操作</li>
                                 <li class="col-sm-3">参数名称</li>
-                                <li class="col-sm-2">是否必须</li>
+                                <li class="col-sm-1">是否必须</li>
                                 <li class="col-sm-2">类型</li>
-                                <li class="col-sm-2">默认值</li>
-                                <li class="col-sm-2">描述</li>
+                                <li class="col-sm-1">默认值</li>
+                                <li class="col-sm-4">描述</li>
                             </ul>
                         </div>
                         <div class="div-table editing">
@@ -180,7 +200,6 @@
                         <li v-on:click="flag.resp='header'"><a>响应头(Header)</a></li>
                         <li class="uk-active" v-on:click="flag.resp='body'"><a>响应数据(Body)</a></li>
                     </ul>
-
 
                     <!-- 响应头 -->
                     <div class="tab-content" v-cloak v-show="flag.resp=='header'">
@@ -212,9 +231,10 @@
                             <ul class="div-table-header div-table-line cb">
                                 <li class="col-sm-1">操作</li>
                                 <li class="col-sm-3">参数名称</li>
-                                <li class="col-sm-2">是否必须</li>
+                                <li class="col-sm-1">是否必须</li>
                                 <li class="col-sm-2">类型</li>
-                                <li class="col-sm-4">描述</li>
+                                <li class="col-sm-2">mock</li>
+                                <li class="col-sm-3">描述</li>
                             </ul>
                         </div>
                         <div class="div-table editing " id="responseArgs">
@@ -230,11 +250,23 @@
                             </button>
                         </div>
                     </div>
+
                     <ul uk-tab>
-                        <li class="uk-active"><a>示例数据</a></li>
+                        <li @click="egItem='example'" class="uk-active"><a>示例数据</a></li>
+                        <li v-for="item in content.egs" @click="egItem=item.name"><a>{{item.name}}</a></li>
+                        <li class="uk-disabled" v-on:click="createNewExample" style="pointer-events:auto"><a>添加多个示例</a></li>
                     </ul>
-                    <textarea rows="5" class="api-example api-field uk-textarea" v-model="content.example"
+                    <div v-show="egItem=='example'">
+                        <textarea rows="5" class="api-example api-field uk-textarea" v-model="content.example"
                               placeholder="请添加一些示例数据">{{content.example}}</textarea>
+                    </div>
+                    <div v-show="egItem==item.name" v-for="item in content.egs">
+                        <textarea rows="5" class="api-example api-field uk-textarea" v-model="item.value"
+                              :placeholder='"请添加一些"+item.name'>{{item.value}}</textarea>
+                    </div>
+
+
+
                     <ul uk-tab>
                         <li class="uk-active"><a>附件</a></li>
                     </ul>
@@ -294,4 +326,4 @@
 <jsp:include page="../includes/request-headers.jsp"/>
 <jsp:include page="../includes/response-args.jsp"/>
 <jsp:include page="../includes/response-headers.jsp"/>
-<script src="${ctx}/proxy/${pluginInfo.id}/web/http/edit.js?v=${pluginInfo.version}"></script>
+<script src="${ctx}/proxy/${pluginInfo.id}/web/http/edit.js?v=${v}${pluginInfo.version}"></script>

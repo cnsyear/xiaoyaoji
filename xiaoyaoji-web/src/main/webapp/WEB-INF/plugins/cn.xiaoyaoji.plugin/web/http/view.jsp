@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="${ctx}/proxy/${pluginInfo.id}/assets/css/http.css?v=${v}"/>
 <div class="content-section" id="docApp" style="padding: 0 10px;" v-cloak>
 
-<span class="doc-update-time">更新时间: <span id="api-update-time">{{doc.lastUpdateTime}}</span></span>
+    <span class="doc-update-time">更新时间: <span id="api-update-time">{{doc.lastUpdateTime}}</span></span>
     <div id="api-details" class="api-details">
         <p class="doc-item-section-title">基本信息</p>
         <div class="api-base-info api-edit-box doc-item-section">
@@ -28,7 +28,8 @@
             <div class="cb">
                 <div class="doc-attach" v-for="item in attachs" v-bind:class="{'file':item.type=='FILE'}">
                     <a :href="fileAccess+item.url" v-if="item.type=='FILE'" target="_blank">{{item.fileName}}</a>
-                    <img v-if="item.type =='IMG'" v-bind:src="fileAccess+item.url" :onclick="'window.open(\''+fileAccess+item.url+'\');'">
+                    <img v-if="item.type =='IMG'" v-bind:src="fileAccess+item.url"
+                         :onclick="'window.open(\''+fileAccess+item.url+'\');'">
                 </div>
             </div>
         </div>
@@ -89,7 +90,6 @@
         </div>
 
 
-
         <div v-if="(content.requestHeaders  && content.requestHeaders.length>0)">
             <p class="doc-item-section-title">请求头</p>
             <div class="div-table">
@@ -106,6 +106,11 @@
 
         <div v-if=" (content.requestArgs  && content.requestArgs.length>0)">
             <p class="doc-item-section-title">请求参数</p>
+            <%--<ul uk-tab>
+                <li class="uk-disabled doc-item-section-title-li"><a>请求参数</a></li>
+                <li class="uk-active"><a>表格</a></li>
+                <li><a>JSON</a></li>
+            </ul>--%>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-2">参数名称</li>
@@ -117,6 +122,9 @@
                 <request-args-vue
                         v-bind:request-args.sync="content.requestArgs"></request-args-vue>
             </div>
+            <%--<div>
+                <pre>{{content.requestArgs | toJSONString}}</pre>
+            </div>--%>
         </div>
 
 
@@ -133,7 +141,7 @@
                         v-bind:request-headers.sync="content.responseHeaders"></request-headers-vue>
             </div>
         </div>
-         <div v-if="content.responseArgs && content.responseArgs.length>0">
+        <div v-if="content.responseArgs && content.responseArgs.length>0">
             <p class="doc-item-section-title">响应数据</p>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
@@ -148,12 +156,20 @@
         </div>
 
 
-        <div v-if="content.example">
-            <p class="doc-item-section-title">例子</p>
-            <div class="api-details-desc api-edit-box">
+        <div v-if="content.example || content.egs.length>0">
+            <%--<p class="doc-item-section-title uk-active">例子</p>--%>
+            <ul uk-tab>
+                <li class="uk-active" @click="egItem='example'" v-if="content.example"><a>示例数据</a></li>
+                <li v-for="(item,index) in content.egs" @click="egItem=item.name" bind:class="{'uk-active':!content.example && index==0}"><a>{{item.name}}</a></li>
+            </ul>
+            <div class="api-details-desc api-edit-box" v-if="content.example" v-show="egItem=='example'">
                 <pre class="content" v-html="content.example"></pre>
             </div>
+            <div class="api-details-desc api-edit-box" v-for="(item,index) in content.egs" v-show="egItem == item.name || (!content.example && index==0)">
+                <pre class="content" v-html="item.value"></pre>
+            </div>
         </div>
+
         <p class="doc-item-section-title">演示</p>
         <div>
             <div class="form">
@@ -167,11 +183,15 @@
                             <button class="uk-button uk-button-default">{{currentEnv.name}}</button>
                             <div class="uk-inline">
                                 <button class="uk-button uk-button-default" type="button">
-                                    <span  class="uk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" ratio="1"><polygon points="5 7 15 7 10 12"></polygon></svg></span>
+                                    <span class="uk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                               viewBox="0 0 20 20" ratio="1"><polygon
+                                            points="5 7 15 7 10 12"></polygon></svg></span>
                                 </button>
                                 <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
                                     <ul class="uk-nav uk-dropdown-nav">
-                                        <li v-for="item in global.environment" v-on:click="changeEnv(item)" v-bind:class="{'uk-active':item.t == currentEnv.t}"><a href="#">{{item.name}}</a></li>
+                                        <li v-for="item in global.environment" v-on:click="changeEnv(item)"
+                                            v-bind:class="{'uk-active':item.t == currentEnv.t}"><a href="#">{{item.name}}</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -191,10 +211,14 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="uk-inline">
-                                <span class="uk-icon" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" ratio="1"><polygon points="5 7 15 7 10 12"></polygon></svg></span>
+                                <span class="uk-icon" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="20" height="20"
+                                                                                 viewBox="0 0 20 20" ratio="1"><polygon
+                                        points="5 7 15 7 10 12"></polygon></svg></span>
                                 <div uk-dropdown>
                                     <ul class="uk-nav uk-dropdown-nav">
-                                        <li v-for="a in algorithms" v-on:click="algorithmClick(index,a.fn,urlArgs)" ><a href="#">{{a.name}}</a></li>
+                                        <li v-for="a in algorithms" v-on:click="algorithmClick(index,a.fn,urlArgs)"><a
+                                                href="#">{{a.name}}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -214,10 +238,14 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="uk-inline">
-                                <span class="uk-icon" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" ratio="1"><polygon points="5 7 15 7 10 12"></polygon></svg></span>
+                                <span class="uk-icon" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="20" height="20"
+                                                                                 viewBox="0 0 20 20" ratio="1"><polygon
+                                        points="5 7 15 7 10 12"></polygon></svg></span>
                                 <div uk-dropdown>
                                     <ul class="uk-nav uk-dropdown-nav">
-                                        <li v-for="a in algorithms" v-on:click="algorithmClick(index,a.fn,formHeaders)" ><a href="#">{{a.name}}</a></li>
+                                        <li v-for="a in algorithms" v-on:click="algorithmClick(index,a.fn,formHeaders)">
+                                            <a href="#">{{a.name}}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -240,10 +268,11 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <p class="doc-item-section-title second">请求参数<label style="font-size: 12px;padding-left: 10px;color: #666">
+                                <p class="doc-item-section-title second">请求参数<label
+                                        style="font-size: 12px;padding-left: 10px;color: #666">
                                     <input v-model="doNotSendWhenEmpty" type="checkbox"/>数据为空不发
                                 </label></p>
-                                <div class="item"  v-for="(item,index) in formArgs">
+                                <div class="item" v-for="(item,index) in formArgs">
                                     <div class="col-sm-2 label">{{item.name}}</div>
                                     <div class="col-sm-8" v-bind:class="{'full-text':item.type=='file'}">
                                         <input :data-type="item.type"
@@ -265,10 +294,15 @@
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="uk-inline">
-                                            <span class="uk-icon" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" ratio="1"><polygon points="5 7 15 7 10 12"></polygon></svg></span>
+                                            <span class="uk-icon" aria-expanded="false"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 20 20" ratio="1"><polygon
+                                                    points="5 7 15 7 10 12"></polygon></svg></span>
                                             <div uk-dropdown>
                                                 <ul class="uk-nav uk-dropdown-nav">
-                                                    <li v-for="a in algorithms" v-on:click="algorithmClick(index,a.fn,formArgs)" ><a href="#">{{a.name}}</a></li>
+                                                    <li v-for="a in algorithms"
+                                                        v-on:click="algorithmClick(index,a.fn,formArgs)"><a href="#">{{a.name}}</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -309,9 +343,9 @@
                                        class="btn btn-primary" :value="apiLoading?'加载中':'直接运行'">
                             </div>
                             <div v-if="hasXyjPlugin">
-                            <input type="button" data-ignore v-on:click.stop="pluginSubmit"
-                                   class="btn btn-primary" :value="apiLoading?'加载中':'运行'">
-                                </div>
+                                <input type="button" data-ignore v-on:click.stop="pluginSubmit"
+                                       class="btn btn-primary" :value="apiLoading?'加载中':'运行'">
+                            </div>
                             <%--<input type="button" data-ignore v-on:click.stop="apiMock" v-show="content.responseArgs && content.responseArgs.length>0"
                                    class="btn btn-orange" value="mock">--%>
 
@@ -321,19 +355,25 @@
             </form>
             <!--<p class="doc-item-section-title">结果数据</p>-->
             <div class="api-result-tabs cb" v-show="result.content || result.resultHeaders">
-                <a class="tab fl " v-on:click="resultActive='content'" v-bind:class="{'active':(resultActive=='content')}">Body</a>
-                <a class="tab fl" v-on:click="resultActive='headers'" v-bind:class="{'active':(resultActive=='headers')}">Headers</a>
+                <a class="tab fl " v-on:click="resultActive='content'"
+                   v-bind:class="{'active':(resultActive=='content')}">Body</a>
+                <a class="tab fl" v-on:click="resultActive='headers'"
+                   v-bind:class="{'active':(resultActive=='headers')}">Headers</a>
                 <a class="tab fr">Time: {{result.resultRunTime}} ms</a>
                 <a class="tab fr">StatusCode: {{result.resultStatusCode}}</a>
             </div>
             <div v-show="result.content || result.resultHeaders" class="api-result-box">
-                <i v-show="!!result.content && (resultActive=='content')" data-clipboard-target="#api-result" class="content-copy iconfont icon-copy"></i>
-                <i v-show="!!result.content && content.contentType=='HTML' && (resultActive=='content')" class="iconfont icon-openwindow" v-on:click="openNewWindow"></i>
-                <i v-show="!!result.content && (resultActive=='headers')" id="api-result-header-copy" class="iconfont icon-copy"></i>
+                <i v-show="!!result.content && (resultActive=='content')" data-clipboard-target="#api-result"
+                   class="content-copy iconfont icon-copy"></i>
+                <i v-show="!!result.content && content.contentType=='HTML' && (resultActive=='content')"
+                   class="iconfont icon-openwindow" v-on:click="openNewWindow"></i>
+                <i v-show="!!result.content && (resultActive=='headers')" id="api-result-header-copy"
+                   class="iconfont icon-copy"></i>
                 <div id="api-result">
                     <pre v-show="resultActive=='content'" id="api-result-content" v-html="result.content"></pre>
                     <div v-show="resultActive=='headers'" id="api-result-headers">
-                        <pre class="api-result-headers-list" v-show="result.resultHeaders">{{result.resultHeaders}}</pre>
+                        <pre class="api-result-headers-list"
+                             v-show="result.resultHeaders">{{result.resultHeaders}}</pre>
                         <div class="api-result-headers-list" v-show="!result.resultHeaders">
                             <div>
                                 No header for you
@@ -371,8 +411,8 @@
 
 <script>
     var doc = ${doc},
-        projectGlobal=${projectGlobal},
-        pluginId='${pluginInfo.id}';
+            projectGlobal =${projectGlobal},
+            pluginId = '${pluginInfo.id}';
 </script>
 <link rel="stylesheet" type="text/css" href="${cdn}/assets/jsonformat/jsonFormater.css"/>
 <script src="${ctx}/proxy/${pluginInfo.id}/web/http/view.js?v=${pluginInfo.version}"></script>

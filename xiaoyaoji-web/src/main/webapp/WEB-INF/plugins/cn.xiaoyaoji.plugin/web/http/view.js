@@ -19,13 +19,6 @@ requirejs(['utils', 'vue',
         return headers;
     }
 
-    Vue.filter('text', function (value) {
-        if (value) {
-            return value.replace(/\</g, '&lt;').replace(/\>/g, '&gt;')
-        }
-        return '';
-    });
-
     //请求参数
     function getRequestArgs() {
         var args = {};
@@ -373,7 +366,8 @@ requirejs(['utils', 'vue',
                     return window.btoa(value);
                 }
                 }
-            ]
+            ],
+            egItem:'example'
         },
         mounted: function () {
             initAceEditor(this.content.dataType, this);
@@ -390,6 +384,21 @@ requirejs(['utils', 'vue',
         watch: {
             doNotSendWhenEmpty: function (value) {
                 localStorage.setItem("doc.doNotSendWhenEmpty", value);
+            }
+        },
+        filters:{
+            text:function(value){
+                if (value) {
+                    return value.replace(/\</g, '&lt;').replace(/\>/g, '&gt;')
+                }
+                return '';
+            },
+            toJSONString:function(obj){
+                if(!obj){
+                    return '';
+                }
+
+                return JSON.stringify(obj);
             }
         },
         created: function () {
@@ -432,6 +441,9 @@ requirejs(['utils', 'vue',
             }
             if (!this.content.url) {
                 this.content.url = '';
+            }
+            if(!this.content.egs){
+                this.content.egs=[];
             }
 
             this.global = g;
@@ -532,7 +544,11 @@ requirejs(['utils', 'vue',
             changeEnv: function (item) {
                 this.currentEnv = item;
                 localStorage.setItem(_projectId_ + "_currentEnv", JSON.stringify(item))
+            },
+            arrayToObject:function(arr){
+                //todo 对象转字符串
             }
+
         }
     });
 
@@ -615,4 +631,7 @@ requirejs(['utils', 'vue',
         });
         return obj;
     }
+
+
+
 });

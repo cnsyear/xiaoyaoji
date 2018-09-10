@@ -26,7 +26,7 @@
                     <ul>
                         <li v-on:click="sidebar('loadGlobal','http')"><div class="x-li"><a>全局参数</a></div></li>
                         <li v-on:click="sidebar('loadGlobal','env')"><div class="x-li"><a>环境变量</a></div></li>
-                        <li v-on:click="sidebar('loadGlobal','status')"><div class="x-li"><a>全局状态</a></div></li>
+                        <%--<li v-on:click="sidebar('loadGlobal','status')"><div class="x-li"><a>全局状态</a></div></li>--%>
                     </ul>
                 </div>
             </li>

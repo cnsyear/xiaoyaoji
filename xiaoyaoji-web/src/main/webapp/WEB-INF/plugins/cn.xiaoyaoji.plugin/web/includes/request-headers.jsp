@@ -9,12 +9,12 @@
                 <i class="iconfont icon-drag-copy" v-on:dragstart="dragstart(requestHeaders,item)"></i>
             </li>
             <li class="col-sm-3 input"><input type="text" list="headerlist" class="text name" v-model="item.name" :value="item.name"></li>
-            <li class="col-sm-2"><select v-model="item.require">
-                <option value="true">true</option>
-                <option value="false">false</option>
+            <li class="col-sm-1"><select v-model="item.require">
+                <option value="true">是</option>
+                <option value="false">否</option>
             </select></li>
             <li class="col-sm-2 input"><input type="text" class="text" v-model="item.defaultValue" :value="item.defaultValue"></li>
-            <li class="col-sm-4 input"><input type="text" class="text" v-model="item.description" :value="item.description"></li>
+            <li class="col-sm-5 input"><input type="text" class="text" v-model="item.description" :value="item.description"></li>
         </ul>
         </div>
         <div v-else>

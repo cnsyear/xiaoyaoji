@@ -10,11 +10,12 @@
                         <i class="iconfont icon-tianjia" v-on:click="insertRow(item,name)"></i>
                         <i class="iconfont icon-drag-copy" v-on:dragstart="dragstart(responseArgs,item)"></i>
                     </li>
-                    <li class="col-sm-3 input"><input type="text" list="responselist" class="text name"
+                    <li class="col-sm-3 input">
+                        <input type="text" list="responselist" class="text name" placeholder="请输入响应参数"
                                                       v-model="item.name" :value="item.name"></li>
-                    <li class="col-sm-2"><select v-model="item.require">
-                        <option value="true">true</option>
-                        <option value="false">false</option>
+                    <li class="col-sm-1"><select v-model="item.require">
+                        <option value="true">是</option>
+                        <option value="false">否</option>
                     </select></li>
                     <li class="col-sm-2">
                         <select v-model="item.type">
@@ -30,9 +31,14 @@
                             <option value="array[array]">array[array]</option>
                         </select>
                     </li>
-                    <li class="col-sm-4 input full-height">
-                        <input type="text" class="text" v-model="item.description" :value="item.description">
+                    <li class="col-sm-2 input">
+                        <input type="text" class="text" v-model="item.mock" :value="item.mock" placeholder="请输入mock规则">
                     </li>
+                    <li class="col-sm-3 input full-height" :title="item.description">
+                        <%--<input type="text" class="text" v-model="item.description" :value="item.description" placeholder="一些描述文字">--%>
+                        <div class="text rich-text" contenteditable="true" v-html="item.description" v-on:input="descriptionChanged($event,item)"></div>
+                    </li>
+
                 </ul>
             </div>
             <div v-else>
@@ -54,7 +60,6 @@
                     </li>
                 </ul>
             </div>
-
             <div class="sub">
                 <response-args-vue v-bind:response-args="item.children" v-bind:pid="item.id"
                                    v-bind:editing="editing"></response-args-vue>

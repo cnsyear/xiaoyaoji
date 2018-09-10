@@ -82,6 +82,11 @@
             </bean>
         </property>
     </bean>
+    <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="queueCapacity" value="25"/>
+    </bean>
 
     <!-- 注解扫描 -->
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
@@ -98,7 +103,7 @@
         </mvc:return-value-handlers>
     </mvc:annotation-driven>
     <!-- controller扫描 -->
-    <context:component-scan base-package="cn.com.xiaoyaoji.controller" />
+    <context:component-scan base-package="cn.com.xiaoyaoji" />
 
     <mvc:resources mapping="/assets/**" location="/assets/"/>
     <mvc:resources mapping="/test/**" location="/test/"/>

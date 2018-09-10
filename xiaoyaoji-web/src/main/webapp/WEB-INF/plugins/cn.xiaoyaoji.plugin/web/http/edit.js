@@ -29,7 +29,8 @@
                 content:null,
                 fileAccess:null,
                 attachs:null,
-                global:null
+                global:null,
+                egItem:'example' //当前选中的示例
             },
             created:function(){
                 if(!this.doc.content){
@@ -61,6 +62,9 @@
                 }
                 if(!content.url){
                     content.url='';
+                }
+                if(!content.egs){
+                    content.egs=[];
                 }
 
                 commons.checkId(content.requestArgs);
@@ -107,6 +111,7 @@
                     });
                 }
                 this.urlArgs= urlArgs;
+                window.xx = this;
             },
             computed:{
                 requestURL: function () {
@@ -212,6 +217,15 @@
                     utils.fileloader('/attach',fd,function(){
                         self.loadAttach();
                     });
+                },
+                /**
+                 * 创建新示例
+                 */
+                createNewExample:function(){
+                    var self = this;
+                    UIkit.modal.prompt('示例名称:', '').then(function(rs){
+                        self.content.egs.push({name:rs,value:''});
+                    })
                 }
             }
         });

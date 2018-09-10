@@ -70,6 +70,9 @@
                         $dom.addClass('open');
                         $next.slideDown();
                     }
+                }  ,
+                descriptionChanged:function(e,item){
+                    item.description = e.target.innerText;
                 }
             }
         }

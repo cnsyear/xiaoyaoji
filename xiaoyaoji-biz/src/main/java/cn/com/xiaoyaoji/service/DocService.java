@@ -11,11 +11,10 @@ import cn.com.xiaoyaoji.data.bean.Doc;
 import cn.com.xiaoyaoji.data.bean.DocHistory;
 import cn.com.xiaoyaoji.data.bean.TableNames;
 import cn.com.xiaoyaoji.integration.file.FileManager;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -25,36 +24,36 @@ import java.util.*;
 public class DocService {
     private static Logger logger = Logger.getLogger(DocService.class);
     private static DocService service;
-    private DocService(){
+
+    private DocService() {
     }
+
     static {
-        service= new DocService();
+        service = new DocService();
     }
-    public static DocService instance(){
+
+    public static DocService instance() {
         return service;
     }
 
 
-    public Doc getDoc(String id ){
-        return DataFactory.instance().getById(Doc.class,id);
+    public Doc getDoc(String id) {
+        return DataFactory.instance().getById(Doc.class, id);
     }
 
 
     public Doc getByHistoryId(String historyId) {
-        DocHistory history = DataFactory.instance().getById(DocHistory.class,historyId);
-        if(history != null){
+        DocHistory history = DataFactory.instance().getById(DocHistory.class, historyId);
+        if (history != null) {
             Doc doc = new Doc();
-            try {
-                BeanUtils.copyProperties(doc,history);
-                doc.setId(history.getDocId());
-                doc.setLastUpdateTime(history.getCreateTime());
-                if(doc.getContent() == null){
-                    doc.setContent("{}");
-                }
-                return doc;
-            } catch (IllegalAccessException |InvocationTargetException e) {
-                logger.error(e.getMessage(),e);
+            BeanUtils.copyProperties(history, doc);
+            doc.setId(history.getDocId());
+            doc.setLastUpdateTime(history.getCreateTime());
+            if (doc.getContent() == null) {
+                doc.setContent("{}");
             }
+            return doc;
+
         }
         return null;
     }
@@ -77,7 +76,7 @@ public class DocService {
     }
 
     public List<Doc> searchDocs(String text, String projectId) {
-        return ResultUtils.list(DataFactory.instance().searchDocs(text,projectId));
+        return ResultUtils.list(DataFactory.instance().searchDocs(text, projectId));
     }
 
     public String getFirstDocId(String projectId) {
@@ -87,38 +86,38 @@ public class DocService {
 
     /**
      * 获取属性菜单的文档
+     *
      * @param projectId 项目id
      * @return docs
      */
-    public List<Doc> getProjectDocs(String projectId){
+    public List<Doc> getProjectDocs(String projectId) {
         // 获取该项目下所有接口
         List<Doc> docs = ResultUtils.list(ServiceFactory.instance().getDocsByProjectId(projectId));
         return treeDocs(docs);
     }
 
-    public List<Doc> getProjectDocs(String projectId, boolean full){
+    public List<Doc> getProjectDocs(String projectId, boolean full) {
         // 获取该项目下所有接口
         List<Doc> docs = ResultUtils.list(ServiceFactory.instance().getDocsByProjectId(projectId, full));
         return treeDocs(docs);
     }
 
-    private List<Doc> treeDocs(List<Doc> docs ){
-        Map<String,List<Doc>> docMap = new LinkedHashMap<>();
+    private List<Doc> treeDocs(List<Doc> docs) {
+        Map<String, List<Doc>> docMap = new LinkedHashMap<>();
         //root
-        docMap.put("0",new ArrayList<Doc>());
+        docMap.put("0", new ArrayList<Doc>());
         //
-        for(Doc doc:docs){
-            docMap.put(doc.getId(),doc.getChildren());
+        for (Doc doc : docs) {
+            docMap.put(doc.getId(), doc.getChildren());
         }
-        for(Doc doc:docs){
+        for (Doc doc : docs) {
             List<Doc> temp = docMap.get(doc.getParentId());
-            if(temp!=null){
+            if (temp != null) {
                 temp.add(doc);
             }
         }
         return docMap.get("0");
     }
-
 
 
     public void getDocIdsByParentId(Set<String> ids, String parentId) {
@@ -154,16 +153,17 @@ public class DocService {
         }
         return rs;
     }
+
     private int deleteByIds(List<String> ids) {
         return DataFactory.instance().deleteByIds(Doc.class, ids);
     }
 
-    public int copyDoc(String docId,String toProjectId) {
-        return DataFactory.instance().copyDoc(docId,toProjectId);
+    public int copyDoc(String docId, String toProjectId) {
+        return DataFactory.instance().copyDoc(docId, toProjectId);
     }
 
     public List<Doc> getDocsByParentId(String projectId, String parentId) {
-        return ResultUtils.list(DataFactory.instance().getDocsByParentId(projectId,parentId));
+        return ResultUtils.list(DataFactory.instance().getDocsByParentId(projectId, parentId));
     }
 
     public List<String> getRatherThanNumsDocIds(int num) {
@@ -171,6 +171,6 @@ public class DocService {
     }
 
     public void deleteDocHistoryThanNum(int num, String docId) {
-        DataFactory.instance().deleteDocHistoryThanNum(num,docId);
+        DataFactory.instance().deleteDocHistoryThanNum(num, docId);
     }
 }

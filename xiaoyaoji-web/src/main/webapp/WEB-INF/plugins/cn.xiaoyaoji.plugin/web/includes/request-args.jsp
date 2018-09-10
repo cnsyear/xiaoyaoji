@@ -12,11 +12,11 @@
                         <i class="iconfont icon-drag-copy" v-on:dragstart="dragstart(requestArgs,item)"></i>
                     </li>
                     <li class="col-sm-3 input">
-                        <input type="text" list="requestlist" class="text name" v-model="item.name" :value="item.name">
+                        <input type="text" list="requestlist" class="text name" v-model="item.name" :value="item.name" placeholder="请输入请求参数">
                     </li>
-                    <li class="col-sm-2"><select v-model="item.require">
-                        <option value="true">true</option>
-                        <option value="false">false</option>
+                    <li class="col-sm-1"><select v-model="item.require">
+                        <option value="true">是</option>
+                        <option value="false">否</option>
                     </select></li>
                     <li class="col-sm-2">
                         <select v-model="item.type">
@@ -33,10 +33,12 @@
                             <option value="file">file</option>
                         </select>
                     </li>
-                    <li class="col-sm-2 input"><input type="text" class="text" v-model="item.defaultValue"
+                    <li class="col-sm-1 input">
+                        <input type="text" class="text" v-model="item.defaultValue" placeholder="默认值"
                                                       :value="item.defaultValue"></li>
-                    <li class="col-sm-2 input">
-                        <input type="text" class="text" v-model="item.description" :value="item.description">
+                    <li class="col-sm-4 input">
+                        <%--<input type="text" class="text" placeholder="请输入描述" v-model="item.description" :value="item.description">--%>
+                        <div class="text rich-text" contenteditable="true" v-html="item.description" v-on:input="descriptionChanged($event,item)"></div>
                     </li>
                 </ul>
             </div>
