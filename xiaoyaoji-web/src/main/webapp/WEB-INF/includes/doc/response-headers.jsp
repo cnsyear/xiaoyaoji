@@ -16,8 +16,9 @@
                         <option value="true">true</option>
                         <option value="false">false</option>
                     </select></li>
-                    <li class="col-sm-6 input"><input type="text" class="text" v-model="item.description"
-                                                      :value="item.description"></li>
+                    <li class="col-sm-6 input full-height">
+                        <input type="text" class="text" v-model="item.description" :value="item.description">
+                    </li>
                 </ul>
             </div>
             <div v-else>
@@ -47,7 +48,7 @@
     </div>
 </script>
 <script>
-    requirejs(['vue', '${ctx}/proxy/${pluginInfo.id}/assets/js/table.js?v=${pluginInfo.version}'], function (Vue, table) {
+    requirejs(['vue', '${assets}/js/project/doc/component/table.js'], function (Vue, table) {
         table = $.extend(true, {}, table);
         table.template = document.getElementById('response-headers-template').innerHTML;
         table.props = ['responseHeaders', 'editing', 'name', 'pid'];

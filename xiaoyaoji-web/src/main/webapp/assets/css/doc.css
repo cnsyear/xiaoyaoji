@@ -106,7 +106,7 @@
     top: 0;
     left: 60px;
     bottom: 0;
-    background-color: #fafafa;
+    background-color: #f5f6f9;
     z-index: 100;
     transition: margin-left .5s;
 }
@@ -222,7 +222,7 @@
 }
 
 .dl-docs .doc-name a:hover {
-    color: #0f6ecd;
+    color: #0091ff;
     text-decoration: underline;
 }
 
@@ -238,19 +238,19 @@
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAECAQAAADoz+32AAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAACYktHRAD/h4/MvwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAl2cEFnAAAABwAAAAQAbLtItQAAACdJREFUCNdNiMENAEAIg6jDdienrQ9zOfkQUIdDWT+sgjcsIITQWQ/KugrMocu3oAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNC0wOS0yM1QxNDozMzo0OCswODowMFgdS7cAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTQtMDktMjNUMTQ6MzM6NDgrMDg6MDApQPMLAAAAAElFTkSuQmCC");
     background-position-y: 15px;
 }
-
-.dl-docs .doc-name i {
-    margin-left: 8px;
-    opacity: 0;
-}
-
-.dl-docs .doc-name:hover i {
+.dl-docs .doc-name:hover .icon-angeldownblock {
     opacity: 1;
 }
 
 .dl-docs .icon-angeldownblock {
-    margin-right: 15px;
+    margin-right: 5px;
     position: relative;
+    z-index: 10;
+    opacity: 0;
+}
+.dl-docs .icon-chevron-right{
+    position: absolute;
+    right: 1px;
     z-index: 10;
 }
 

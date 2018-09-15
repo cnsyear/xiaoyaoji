@@ -162,10 +162,10 @@
 
 
 
-<jsp:include page="/WEB-INF/includes/doc/table/request-headers.jsp"/>
-<jsp:include page="/WEB-INF/includes/doc/table/request-args.jsp"/>
-<jsp:include page="/WEB-INF/includes/doc/table/response-headers.jsp"/>
-<jsp:include page="/WEB-INF/includes/doc/table/response-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/request-headers.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/request-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/response-headers.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/response-args.jsp"/>
 <script>
     var global = ${projectGlobal},_projectId_='${project.id}';
 </script>

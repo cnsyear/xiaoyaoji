@@ -36,9 +36,8 @@
                     <li class="col-sm-1 input">
                         <input type="text" class="text" v-model="item.defaultValue" placeholder="默认值"
                                                       :value="item.defaultValue"></li>
-                    <li class="col-sm-4 input">
-                        <%--<input type="text" class="text" placeholder="请输入描述" v-model="item.description" :value="item.description">--%>
-                        <div class="text rich-text" contenteditable="true" v-html="item.description" v-on:input="descriptionChanged($event,item)"></div>
+                    <li class="col-sm-4 input full-height">
+                        <textarea class="text rich-text" v-model="item.description">{{item.description}}</textarea>
                     </li>
                 </ul>
             </div>
@@ -69,7 +68,7 @@
     </div>
 </script>
 <script>
-    requirejs(['vue','${ctx}/proxy/${pluginInfo.id}/assets/js/table.js?v=${pluginInfo.version}'],function(Vue,table){
+    requirejs(['vue','${assets}/js/project/doc/component/table.js'],function(Vue,table){
         table = $.extend(true,{},table);
         table.template=document.getElementById('request-args-template').innerHTML;
         table.props=['requestArgs','editing','name', 'pid'];

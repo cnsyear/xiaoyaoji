@@ -14,7 +14,9 @@
                 <option value="false">否</option>
             </select></li>
             <li class="col-sm-2 input"><input type="text" class="text" v-model="item.defaultValue" :value="item.defaultValue"></li>
-            <li class="col-sm-5 input"><input type="text" class="text" v-model="item.description" :value="item.description"></li>
+            <li class="col-sm-5 input full-height">
+                <textarea class="text rich-text" v-model="item.description">{{item.description}}</textarea>
+            </li>
         </ul>
         </div>
         <div v-else>
@@ -48,7 +50,7 @@
     </div>
 </script>
 <script>
-    requirejs(['vue','${ctx}/proxy/${pluginInfo.id}/assets/js/table.js?v=${pluginInfo.version}'],function(Vue,table){
+    requirejs(['vue','${assets}/js/project/doc/component/table.js'],function(Vue,table){
         table = $.extend(true,{},table);
         table.template=document.getElementById('request-headers-template').innerHTML;
         table.props=['requestHeaders','editing','name','pid'];

@@ -132,8 +132,8 @@
         </div>
     </div>
 </div>
-<jsp:include page="../includes/request-args.jsp"/>
-<jsp:include page="../includes/response-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/request-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/response-args.jsp"/>
 <script>
     var doc = ${doc},projectGlobal=${projectGlobal},pluginId='${pluginInfo.id}';
 </script>

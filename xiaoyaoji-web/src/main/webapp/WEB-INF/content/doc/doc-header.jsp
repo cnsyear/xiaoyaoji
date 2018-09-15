@@ -70,8 +70,7 @@
         <ul class="x-ul horiz">
             <li><div class="x-li"><a href="${ctx}/">主页</a></div></li>
             <li v-cloak v-for="item in pages"><div class="x-li"><a target="_blank" :href="item.url">{{item.name}}</a></div></li>
-            <li><div class="x-li"><a href="${ctx}/dashboard">控制台</a></div></li>
-            <li><div class="x-li"><a href="http://www.xiaoyaoji.cn/donate" target="_blank">赞助作者</a></div></li>
+            <li><div class="x-li"><a href="http://www.xiaoyaoji.cn/donate" target="_blank">感谢开源</a></div></li>
             <c:if test="${sessionScope.user != null}">
             <li>
                 <div class="x-li"><a><img src="${sessionScope.user.avatar}" class="user-account-logo">&nbsp;${sessionScope.user.nickname}</a></div>

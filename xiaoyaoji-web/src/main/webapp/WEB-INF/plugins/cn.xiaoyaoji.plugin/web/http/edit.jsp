@@ -233,8 +233,8 @@
                                 <li class="col-sm-3">参数名称</li>
                                 <li class="col-sm-1">是否必须</li>
                                 <li class="col-sm-2">类型</li>
-                                <li class="col-sm-2">mock</li>
-                                <li class="col-sm-3">描述</li>
+                                <%--<li class="col-sm-2">mock</li>--%>
+                                <li class="col-sm-5">描述</li>
                             </ul>
                         </div>
                         <div class="div-table editing " id="responseArgs">
@@ -257,7 +257,7 @@
                         <li class="uk-disabled" v-on:click="createNewExample" style="pointer-events:auto"><a>添加多个示例</a></li>
                     </ul>
                     <div v-show="egItem=='example'">
-                        <textarea rows="5" class="api-example api-field uk-textarea" v-model="content.example"
+                        <textarea rows="12" class="api-example api-field uk-textarea" v-model="content.example"
                               placeholder="请添加一些示例数据">{{content.example}}</textarea>
                     </div>
                     <div v-show="egItem==item.name" v-for="item in content.egs">
@@ -322,8 +322,8 @@
 <script>
     var doc = ${doc}, projectGlobal =${projectGlobal}, pluginId = '${pluginInfo.id}';
 </script>
-<jsp:include page="../includes/request-args.jsp"/>
-<jsp:include page="../includes/request-headers.jsp"/>
-<jsp:include page="../includes/response-args.jsp"/>
-<jsp:include page="../includes/response-headers.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/request-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/request-headers.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/response-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/response-headers.jsp"/>
 <script src="${ctx}/proxy/${pluginInfo.id}/web/http/edit.js?v=${v}${pluginInfo.version}"></script>

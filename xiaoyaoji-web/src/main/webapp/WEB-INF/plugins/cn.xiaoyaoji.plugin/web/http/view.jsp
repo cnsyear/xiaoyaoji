@@ -2,24 +2,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="${ctx}/proxy/${pluginInfo.id}/assets/css/http.css?v=${v}"/>
 <div class="content-section" id="docApp" style="padding: 0 10px;" v-cloak>
-
-    <span class="doc-update-time">更新时间: <span id="api-update-time">{{doc.lastUpdateTime}}</span></span>
     <div id="api-details" class="api-details">
-        <p class="doc-item-section-title">基本信息</p>
-        <div class="api-base-info api-edit-box doc-item-section">
-            <div class="cb">
-                <div class="col-sm-3">接口名称: ${doc.name}</div>
-                <div class="col-sm-9" v-show="requestURL">接口地址: {{requestURL}}</div>
-            </div>
-            <div class="cb">
-                <div class="col-sm-3" v-if="content.requestMethod">请求方法: {{content.requestMethod}}</div>
-                <div class="col-sm-3" v-if="content.dataType">数据类型: {{content.dataType}}</div>
-                <div class="col-sm-3" v-if="content.contentType">响应类型: {{content.contentType}}</div>
-                <div class="col-sm-3" v-if="content.status">接口状态: {{content.status}}</div>
-            </div>
+        <h2 class="doc-item-section-title">基本信息</h2>
+        <div class="doc-item-section">
+            <span class="uk-label">{{content.requestMethod}}</span>
+            <span class="uk-label" style="background-color: darkgray">{{content.status}}</span>
+            <%--<span>${doc.name}</span>--%>
+            <span class="uk-label" style="background-color: darkgray">{{content.dataType}}</span>
+        </div>
+        <div class="doc-item-section">
+            <pre>{{requestURL}}</pre>
         </div>
         <div class="doc-item-section" v-if="content.description">
-            <p class="doc-item-section-title">接口描述</p>
+            <h2 class="doc-item-section-title">接口描述</h2>
             <div v-html="content.description"></div>
         </div>
         <%--<c:if test="${doc.attachs.size() > 0}">--%>
@@ -35,7 +30,7 @@
         </div>
         <%--</c:if>--%>
         <div v-if="(global.http.requestHeaders&&global.http.requestHeaders.length>0 && !content.ignoreGHttpReqHeaders)">
-            <p class="doc-item-section-title">全局请求头</p>
+            <h2 class="doc-item-section-title">全局请求头</h2>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-2">参数名称</li>
@@ -48,7 +43,7 @@
             </div>
         </div>
         <div v-if=" (global.http.requestArgs  && global.http.requestArgs.length>0 && !content.ignoreGHttpReqArgs)">
-            <p class="doc-item-section-title">全局请求参数</p>
+            <h2 class="doc-item-section-title">全局请求参数</h2>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-2">参数名称</li>
@@ -62,7 +57,7 @@
             </div>
         </div>
         <div v-if="(global.http.responseHeaders&&global.http.responseHeaders.length>0 && !content.ignoreGHttpRespHeaders)">
-            <p class="doc-item-section-title">全局响应头</p>
+            <h2 class="doc-item-section-title">全局响应头</h2>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-2">参数名称</li>
@@ -76,7 +71,7 @@
         </div>
 
         <div v-if="(global.http.responseArgs  && global.http.responseArgs.length>0 && !content.ignoreGHttpRespArgs)">
-            <p class="doc-item-section-title">全局响应参数</p>
+            <h2 class="doc-item-section-title">全局响应参数</h2>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-3">参数名称</li>
@@ -91,7 +86,7 @@
 
 
         <div v-if="(content.requestHeaders  && content.requestHeaders.length>0)">
-            <p class="doc-item-section-title">请求头</p>
+            <h2 class="doc-item-section-title">请求头</h2>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-2">参数名称</li>
@@ -105,7 +100,7 @@
         </div>
 
         <div v-if=" (content.requestArgs  && content.requestArgs.length>0)">
-            <p class="doc-item-section-title">请求参数</p>
+            <h2 class="doc-item-section-title">请求参数</h2>
             <%--<ul uk-tab>
                 <li class="uk-disabled doc-item-section-title-li"><a>请求参数</a></li>
                 <li class="uk-active"><a>表格</a></li>
@@ -128,8 +123,8 @@
         </div>
 
 
-        <div v-if="(content.requestHeaders  && content.requestHeaders.length>0)">
-            <p class="doc-item-section-title">响应头</p>
+        <div v-if="(content.requestHeaders  && content.responseHeaders.length>0)">
+            <h2 class="doc-item-section-title">响应头</h2>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-2">参数名称</li>
@@ -142,7 +137,7 @@
             </div>
         </div>
         <div v-if="content.responseArgs && content.responseArgs.length>0">
-            <p class="doc-item-section-title">响应数据</p>
+            <h2 class="doc-item-section-title">响应数据 <span class="uk-label">{{content.contentType}}</span></h2>
             <div class="div-table">
                 <ul class="div-table-header div-table-line cb">
                     <li class="col-sm-3">参数名称</li>
@@ -162,15 +157,15 @@
                 <li class="uk-active" @click="egItem='example'" v-if="content.example"><a>示例数据</a></li>
                 <li v-for="(item,index) in content.egs" @click="egItem=item.name" bind:class="{'uk-active':!content.example && index==0}"><a>{{item.name}}</a></li>
             </ul>
-            <div class="api-details-desc api-edit-box" v-if="content.example" v-show="egItem=='example'">
+            <div class="api-details-desc api-edit-box" v-show="content.example && egItem=='example'">
                 <pre class="content" v-html="content.example"></pre>
             </div>
-            <div class="api-details-desc api-edit-box" v-for="(item,index) in content.egs" v-show="egItem == item.name || (!content.example && index==0)">
+            <div class="api-details-desc api-edit-box" v-for="(item,index) in content.egs" v-show="egItem == item.name || (!content.example && index==0 && egItem=='example')">
                 <pre class="content" v-html="item.value"></pre>
             </div>
         </div>
 
-        <p class="doc-item-section-title">演示</p>
+        <h2 class="doc-item-section-title">演示</h2>
         <div>
             <div class="form">
                 <div class="item">
@@ -201,7 +196,7 @@
             </div>
             <div class="form">
                 <div v-if="urlArgs.length>0">
-                    <p class="doc-item-section-title second">地址参数</p>
+                    <h3 class="doc-item-section-title second">地址参数</h3>
                     <div class="item" v-for="(item,index) in urlArgs">
                         <div class="col-sm-2 label">{{item.name}}</div>
                         <div class="col-sm-8">
@@ -229,7 +224,7 @@
 
             <div v-if="formHeaders.length>0">
                 <form class="api-test form" id="header-form">
-                    <p class="doc-item-section-title second">请求头</p>
+                    <h3 class="doc-item-section-title second">请求头</h3>
                     <div class="item" v-for="(item,index) in formHeaders">
                         <div class="col-sm-2 label">{{item.name}}</div>
                         <div class="col-sm-8">
@@ -268,10 +263,10 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <p class="doc-item-section-title second">请求参数<label
+                                <h3 class="doc-item-section-title second">请求参数<label
                                         style="font-size: 12px;padding-left: 10px;color: #666">
                                     <input v-model="doNotSendWhenEmpty" type="checkbox"/>数据为空不发
-                                </label></p>
+                                </label></h3>
                                 <div class="item" v-for="(item,index) in formArgs">
                                     <div class="col-sm-2 label">{{item.name}}</div>
                                     <div class="col-sm-8" v-bind:class="{'full-text':item.type=='file'}">
@@ -314,7 +309,7 @@
                 </div>
 
                 <div v-if="content.dataType=='RAW'">
-                    <p class="doc-item-section-title second">请求数据</p>
+                    <h3 class="doc-item-section-title second">请求数据</h3>
                     <div class="item">
                         <div class="col-sm-2 label">body</div>
                         <div class="col-sm-8">
@@ -323,7 +318,7 @@
                     </div>
                 </div>
                 <div v-if="content.dataType=='BINARY'">
-                    <p class="doc-item-section-title second">请求数据</p>
+                    <h3 class="doc-item-section-title second">请求数据</h3>
                     <div class="item">
                         <div class="col-sm-2 label">BINARY</div>
                         <div class="col-sm-8">
@@ -405,9 +400,10 @@
         </div>
     </div>
 </div>
-<jsp:include page="../includes/request-args.jsp"/>
-<jsp:include page="../includes/request-headers.jsp"/>
-<jsp:include page="../includes/response-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/request-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/request-headers.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/response-args.jsp"/>
+<jsp:include page="/WEB-INF/includes/doc/response-headers.jsp"/>
 
 <script>
     var doc = ${doc},

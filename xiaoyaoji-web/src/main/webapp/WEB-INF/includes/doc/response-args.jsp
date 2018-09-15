@@ -31,12 +31,11 @@
                             <option value="array[array]">array[array]</option>
                         </select>
                     </li>
-                    <li class="col-sm-2 input">
+                    <%--<li class="col-sm-2 input">
                         <input type="text" class="text" v-model="item.mock" :value="item.mock" placeholder="请输入mock规则">
-                    </li>
-                    <li class="col-sm-3 input full-height" :title="item.description">
-                        <%--<input type="text" class="text" v-model="item.description" :value="item.description" placeholder="一些描述文字">--%>
-                        <div class="text rich-text" contenteditable="true" v-html="item.description" v-on:input="descriptionChanged($event,item)"></div>
+                    </li>--%>
+                    <li class="col-sm-5 input full-height" :title="item.description">
+                        <textarea class="text rich-text" v-model="item.description">{{item.description}}</textarea>
                     </li>
 
                 </ul>
@@ -68,7 +67,7 @@
     </div>
 </script>
 <script>
-    requirejs(['vue', '${ctx}/proxy/${pluginInfo.id}/assets/js/table.js?v=${pluginInfo.version}'], function (Vue, table) {
+    requirejs(['vue', '${assets}/js/project/doc/component/table.js'], function (Vue, table) {
         table = $.extend(true, {}, table);
         table.template = document.getElementById('response-args-template').innerHTML;
         table.props = ['responseArgs', 'editing', 'name', 'pid'];
