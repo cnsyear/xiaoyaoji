@@ -29,7 +29,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @author: zhoujingjie
  * Date: 2018/9/19
  */
-@SpringBootApplication(scanBasePackages = "com.qunquntong")
+@SpringBootApplication(scanBasePackages = "cn.xiaoyaoji.api")
 public class TestApplication {
     public static void main(String[] args) {
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
