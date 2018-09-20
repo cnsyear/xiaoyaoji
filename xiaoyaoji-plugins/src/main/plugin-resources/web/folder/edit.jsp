@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="cn.com.xiaoyaoji.service.DocService" %>
-<%@ page import="cn.com.xiaoyaoji.data.bean.Doc" %>
+<%@ page import="cn.xiaoyaoji.service.biz.doc.service.DocService" %>
+<%@ page import="cn.xiaoyaoji.service.biz.doc.bean.Doc" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%

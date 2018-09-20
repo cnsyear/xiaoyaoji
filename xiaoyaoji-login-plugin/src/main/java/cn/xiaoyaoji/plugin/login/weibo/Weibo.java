@@ -1,9 +1,6 @@
 package cn.xiaoyaoji.plugin.login.weibo;
 
-import cn.com.xiaoyaoji.core.util.HttpUtils;
-import cn.xiaoyaoji.plugin.login.weibo.AccessToken;
-import cn.xiaoyaoji.plugin.login.weibo.User;
-import cn.xiaoyaoji.plugin.login.weibo.WeiboException;
+import cn.xiaoyaoji.core.util.HttpUtils;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;

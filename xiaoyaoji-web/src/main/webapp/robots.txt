@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-
-SITEMAP: http://www.xiaoyaoji.cn/sitemap.txt

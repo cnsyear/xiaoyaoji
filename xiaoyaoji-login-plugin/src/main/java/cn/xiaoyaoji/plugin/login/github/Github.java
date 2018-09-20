@@ -1,10 +1,7 @@
 package cn.xiaoyaoji.plugin.login.github;
 
-import cn.com.xiaoyaoji.core.util.HttpUtils;
+import cn.xiaoyaoji.core.util.HttpUtils;
 import cn.xiaoyaoji.plugin.login.AccessToken;
-import cn.xiaoyaoji.plugin.login.github.Email;
-import cn.xiaoyaoji.plugin.login.github.GithubException;
-import cn.xiaoyaoji.plugin.login.github.User;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import org.apache.commons.httpclient.Header;

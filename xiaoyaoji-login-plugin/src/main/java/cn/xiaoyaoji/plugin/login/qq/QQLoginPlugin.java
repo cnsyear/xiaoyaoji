@@ -1,13 +1,11 @@
 package cn.xiaoyaoji.plugin.login.qq;
 
-import cn.com.xiaoyaoji.core.plugin.LoginPlugin;
-import cn.com.xiaoyaoji.core.plugin.PluginInfo;
-import cn.com.xiaoyaoji.core.util.AssertUtils;
-import cn.com.xiaoyaoji.core.util.ConfigUtils;
-import cn.com.xiaoyaoji.data.bean.Thirdparty;
-import cn.com.xiaoyaoji.data.bean.User;
-import cn.com.xiaoyaoji.service.ServiceFactory;
-import cn.com.xiaoyaoji.util.PluginUtils;
+import cn.xiaoyaoji.core.plugin.LoginPlugin;
+import cn.xiaoyaoji.core.util.AssertUtils;
+import cn.xiaoyaoji.data.bean.Thirdparty;
+import cn.xiaoyaoji.data.bean.User;
+import cn.xiaoyaoji.service.ServiceFactory;
+import cn.xiaoyaoji.util.PluginUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -42,7 +40,7 @@ public class QQLoginPlugin extends LoginPlugin {
         thirdparty.setLogo(userInfo.getFigureurl_qq_2());
         thirdparty.setNickName(userInfo.getNickname());
         thirdparty.setType(getPluginInfo().getId());
-        cn.com.xiaoyaoji.data.bean.User user = ServiceFactory.instance().loginByThirdparty(thirdparty);
+        User user = ServiceFactory.instance().loginByThirdparty(thirdparty);
         AssertUtils.notNull(user,"该账户暂未绑定小幺鸡账户,请绑定后使用");
         return user;
     }

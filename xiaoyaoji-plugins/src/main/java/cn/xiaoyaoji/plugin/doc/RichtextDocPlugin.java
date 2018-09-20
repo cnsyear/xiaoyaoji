@@ -1,6 +1,6 @@
 package cn.xiaoyaoji.plugin.doc;
 
-import cn.com.xiaoyaoji.core.plugin.doc.DocEvPlugin;
+import cn.xiaoyaoji.core.plugin.doc.DocEvPlugin;
 
 /**
  * @author zhoujingjie

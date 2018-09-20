@@ -1,11 +1,11 @@
 package cn.xiaoyaoji.plugin.login.github;
 
-import cn.com.xiaoyaoji.core.plugin.LoginPlugin;
-import cn.com.xiaoyaoji.core.util.AssertUtils;
-import cn.com.xiaoyaoji.data.bean.Thirdparty;
-import cn.com.xiaoyaoji.data.bean.User;
-import cn.com.xiaoyaoji.service.ServiceFactory;
-import cn.com.xiaoyaoji.util.PluginUtils;
+import cn.xiaoyaoji.core.plugin.LoginPlugin;
+import cn.xiaoyaoji.core.util.AssertUtils;
+import cn.xiaoyaoji.data.bean.Thirdparty;
+import cn.xiaoyaoji.data.bean.User;
+import cn.xiaoyaoji.service.ServiceFactory;
+import cn.xiaoyaoji.util.PluginUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

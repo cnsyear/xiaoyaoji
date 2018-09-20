@@ -1,10 +1,6 @@
 package cn.xiaoyaoji.plugin.login.qq;
 
-import cn.com.xiaoyaoji.core.util.ConfigUtils;
-import cn.com.xiaoyaoji.core.util.HttpUtils;
-import cn.xiaoyaoji.plugin.login.qq.AccessToken;
-import cn.xiaoyaoji.plugin.login.qq.QQException;
-import cn.xiaoyaoji.plugin.login.qq.UserInfo;
+import cn.xiaoyaoji.core.util.HttpUtils;
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
 
