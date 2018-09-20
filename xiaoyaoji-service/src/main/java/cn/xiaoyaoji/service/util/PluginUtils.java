@@ -1,6 +1,6 @@
 package cn.xiaoyaoji.service.util;
 
-import cn.xiaoyaoji.service.common.AppCts;
+import cn.xiaoyaoji.service.AppCts;
 import cn.xiaoyaoji.service.plugin.Dependency;
 import cn.xiaoyaoji.service.plugin.Plugin;
 import cn.xiaoyaoji.service.plugin.PluginInfo;

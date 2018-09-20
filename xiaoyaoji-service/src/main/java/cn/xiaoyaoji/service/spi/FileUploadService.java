@@ -1,3 +1,5 @@
+package cn.xiaoyaoji.service.spi;
+
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
  * 　　　　　　　┏┛┻━━━┛┻┓ + +
@@ -21,8 +23,15 @@
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  *
- * 功能扩展包
  * @author: zhoujingjie
- * Date: 2018/9/18
+ * Date: 2018/9/20
  */
-package cn.xiaoyaoji.api.extension;
+public interface FileUploadService {
+
+    /**
+     * 删除文件
+     *
+     * @param path 文件路径
+     */
+    void delete(String path);
+}

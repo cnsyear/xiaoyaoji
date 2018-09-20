@@ -1,4 +1,4 @@
-package cn.xiaoyaoji.service.common;
+package cn.xiaoyaoji.service;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

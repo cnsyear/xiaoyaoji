@@ -4,7 +4,7 @@ import cn.xiaoyaoji.api.utils.PasswordUtils;
 import cn.xiaoyaoji.service.annotations.Ignore;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.biz.user.service.UserService;
-import cn.xiaoyaoji.service.common.AppCts;
+import cn.xiaoyaoji.service.AppCts;
 import cn.xiaoyaoji.service.common.HashMapX;
 import cn.xiaoyaoji.service.common.Result;
 import cn.xiaoyaoji.service.plugin.LoginPlugin;

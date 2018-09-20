@@ -1,4 +1,4 @@
-package cn.xiaoyaoji.service.common;
+package cn.xiaoyaoji.service;
 
 /**
  * @author zhoujingjie

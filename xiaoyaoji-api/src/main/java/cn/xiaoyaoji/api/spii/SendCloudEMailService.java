@@ -1,18 +1,20 @@
-package cn.xiaoyaoji.api.extension.email;
+package cn.xiaoyaoji.api.spii;
 
-import cn.xiaoyaoji.service.common.HashMapX;
-import cn.xiaoyaoji.service.util.ConfigUtils;
-import com.alibaba.fastjson.JSON;
+import cn.xiaoyaoji.service.spi.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 
 /**
- *
  * //todo 该功能做成插件
+ *
  * @author zhoujingjie
  *         created on 2017/5/18
  */
-public class SendCloudEMailProvider implements EmailProvider {
+@Component
+@ConditionalOnProperty(value = "xyj.plugin.email.provider",havingValue = "cn.xiaoyaoji.api.spii.SendCloudEMailService")
+public class SendCloudEMailService implements EmailService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private static String TEMPLATE_URL = "http://sendcloud.sohu.com/webapi/mail.send_template.json";
 
@@ -32,7 +34,7 @@ public class SendCloudEMailProvider implements EmailProvider {
     }
 
     @Override
-    public void findPassword(String findPageURL, String to) {
+    public void sendFindPassword(String findPageURL, String to) {
         /*String vars = JSON.toJSONString(new HashMapX<>().append("to", new String[]{to}).append("sub", new HashMapX<>().append("%url%", new String[]{findPageURL})));
         NameValuePair[] pairs = new NameValuePair[]{new NameValuePair("api_user", ConfigUtils.getProperty("sendcloud.system.apiuser")),
                 new NameValuePair("api_key", ConfigUtils.getProperty("sendcloud.apikey")),

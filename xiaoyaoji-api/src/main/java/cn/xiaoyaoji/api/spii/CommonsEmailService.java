@@ -1,23 +1,37 @@
-package cn.xiaoyaoji.api.extension.email;
+package cn.xiaoyaoji.api.spii;
 
+import cn.xiaoyaoji.service.spi.EmailService;
 import cn.xiaoyaoji.service.util.ConfigUtils;
 import org.apache.commons.mail.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * 基于commons email 实现
  *
  * @author zhoujingjie
- * created on 2017/5/18
+ *         created on 2017/5/18
  */
-public class DefaultEMailProvider implements EmailProvider {
-    private static Logger logger = LoggerFactory.getLogger(DefaultEMailProvider.class);
-    private String hostName = ConfigUtils.getProperty("email.smtp.server");
-    private int port = Integer.parseInt(ConfigUtils.getProperty("email.smtp.port"));
-    private String username = ConfigUtils.getProperty("email.username");
-    private String password = ConfigUtils.getProperty("email.password");
-    private String from = ConfigUtils.getProperty("email.from");
+@Component
+@ConditionalOnProperty(value = "xyj.plugin.email.provider", havingValue = "cn.xiaoyaoji.api.spii.CommonsEmailService")
+public class CommonsEmailService implements EmailService {
+    private Logger logger = LoggerFactory.getLogger(CommonsEmailService.class);
+    @Value("${xyj.plugin.email.smtp.server}")
+    private String hostName;
+    @Value("${xyj.plugin.email.smtp.port}")
+    private int port;
+    @Value("${xyj.plugin.email.username}")
+    private String username;
+    @Value("${xyj.plugin.email.password}")
+    private String password;
+    @Value("${xyj.plugin.email.from}")
+    private String from;
+
 
     @Override
     public void sendCaptcha(String code, String to) {
@@ -43,7 +57,7 @@ public class DefaultEMailProvider implements EmailProvider {
     }
 
     @Override
-    public void findPassword(String findPageURL, String to) {
+    public void sendFindPassword(String findPageURL, String to) {
         try {
             HtmlEmail email = new HtmlEmail();
             authentication(email);

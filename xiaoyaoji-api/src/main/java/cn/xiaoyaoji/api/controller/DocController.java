@@ -5,7 +5,7 @@ import cn.xiaoyaoji.service.biz.doc.bean.DocHistory;
 import cn.xiaoyaoji.service.biz.doc.service.DocHistoryService;
 import cn.xiaoyaoji.service.common.DocType;
 import cn.xiaoyaoji.service.common.HashMapX;
-import cn.xiaoyaoji.service.common.Message;
+import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.plugin.PluginInfo;
 import cn.xiaoyaoji.service.plugin.PluginManager;
 import cn.xiaoyaoji.service.util.AssertUtils;

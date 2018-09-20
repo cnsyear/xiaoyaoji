@@ -2,8 +2,8 @@ package cn.xiaoyaoji.api.config;
 
 import cn.xiaoyaoji.api.base.SessionTimeoutException;
 import cn.xiaoyaoji.service.annotations.Ignore;
-import cn.xiaoyaoji.service.common.AppCts;
-import cn.xiaoyaoji.service.integration.cache.CacheService;
+import cn.xiaoyaoji.service.AppCts;
+import cn.xiaoyaoji.service.spi.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

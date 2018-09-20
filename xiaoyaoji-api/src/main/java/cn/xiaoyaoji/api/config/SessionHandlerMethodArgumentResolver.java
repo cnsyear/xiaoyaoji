@@ -2,8 +2,8 @@ package cn.xiaoyaoji.api.config;
 
 import cn.xiaoyaoji.api.base.Session;
 import cn.xiaoyaoji.service.biz.user.bean.User;
-import cn.xiaoyaoji.service.common.AppCts;
-import cn.xiaoyaoji.service.integration.cache.CacheService;
+import cn.xiaoyaoji.service.AppCts;
+import cn.xiaoyaoji.service.spi.CacheService;
 import com.google.common.base.Strings;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;

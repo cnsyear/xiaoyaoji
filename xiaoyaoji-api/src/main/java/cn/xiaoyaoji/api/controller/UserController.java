@@ -3,10 +3,11 @@ package cn.xiaoyaoji.api.controller;
 import cn.xiaoyaoji.api.base.Session;
 import cn.xiaoyaoji.service.annotations.Ignore;
 import cn.xiaoyaoji.service.biz.user.service.FindPasswordService;
-import cn.xiaoyaoji.service.common.AppCts;
+import cn.xiaoyaoji.service.AppCts;
 import cn.xiaoyaoji.service.common.HashMapX;
-import cn.xiaoyaoji.service.common.Message;
+import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.common.Result;
+import cn.xiaoyaoji.service.spi.EmailService;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.ConfigUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
@@ -14,10 +15,7 @@ import cn.xiaoyaoji.service.biz.user.bean.FindPassword;
 import cn.xiaoyaoji.service.biz.user.bean.UserThirdParty;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.util.CacheUtils;
-import cn.xiaoyaoji.api.extension.email.EMailUtils;
-import cn.xiaoyaoji.api.extension.file.FileUtils;
 import cn.xiaoyaoji.service.biz.user.service.UserService;
-import cn.xiaoyaoji.api.extension.file.MetaData;
 import cn.xiaoyaoji.api.utils.PasswordUtils;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +38,9 @@ public class UserController {
     private UserService userService;
     @Autowired
     private FindPasswordService findPasswordService;
+
+    @Autowired
+    private EmailService emailService;
 
     /**
      * 修改
@@ -115,7 +116,7 @@ public class UserController {
         fp.setId(StringUtils.id());
         int rs = findPasswordService.insert(fp);
         AssertUtils.isTrue(rs > 0, Message.OPER_ERR);
-        EMailUtils.findPassword(fp.getId(), email);
+        emailService.sendFindPassword(fp.getId(), email);
         return rs;
     }
 
@@ -164,7 +165,7 @@ public class UserController {
         String code = StringUtils.code();
         AssertUtils.notNull(email, "邮箱为空");
         AssertUtils.isTrue(StringUtils.isEmail(email), "邮箱格式错误");
-        EMailUtils.sendCaptcha(code, email);
+        emailService.sendCaptcha(code, email);
         CacheUtils.put(token, "emailCaptcha", code);
         return true;
     }
@@ -227,7 +228,7 @@ public class UserController {
     @PostMapping("avatar")
     public Object uploadAvatar(@Session User user, @RequestParam("avatar") MultipartFile file, @RequestHeader(AppCts.TOKEN_NAME) String token) throws IOException {
         String fileAccess = ConfigUtils.getFileAccessURL();
-
+/*
         if (file != null && file.getSize() > 0 && file.getContentType().startsWith("image")) {
 
             MetaData md = FileUtils.upload(file);
@@ -248,7 +249,8 @@ public class UserController {
             CacheUtils.putUser(token, user);
             return new HashMapX<>().append("avatar", ConfigUtils.getFileAccessURL() + user.getAvatar());
         }
-        return new Result<>(false, "请上传图片");
+        return new Result<>(false, "请上传图片");*/
+        return null;
     }
 
 }

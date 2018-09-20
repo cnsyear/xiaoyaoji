@@ -1,7 +1,6 @@
-package cn.xiaoyaoji;
+package cn.xiaoyaoji.api;
 
 import cn.xiaoyaoji.service.ServiceConfig;
-import cn.xiaoyaoji.service.util.ConfigUtils;
 import cn.xiaoyaoji.service.util.PluginUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

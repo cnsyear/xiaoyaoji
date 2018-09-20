@@ -9,7 +9,7 @@ import cn.xiaoyaoji.service.biz.project.service.ProjectUserService;
 import cn.xiaoyaoji.service.biz.project.service.ShareService;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.biz.user.service.UserService;
-import cn.xiaoyaoji.service.common.Message;
+import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.plugin.PluginInfo;
 import cn.xiaoyaoji.service.plugin.PluginManager;
 import cn.xiaoyaoji.service.plugin.doc.DocExportPlugin;

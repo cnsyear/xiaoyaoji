@@ -1,19 +1,7 @@
-package cn.xiaoyaoji.service.integration.cache;
+package cn.xiaoyaoji.api.spii;
 
-import cn.xiaoyaoji.service.biz.user.bean.User;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import cn.xiaoyaoji.service.spi.FileUploadService;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -37,39 +25,19 @@ import java.util.concurrent.TimeUnit;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
- * 默认实现类
  *
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/20
  */
 @Component
-public class DefaultCacheService implements CacheService {
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Value("${xyj.token.expires}")
-    private int tokenExpires;
-
-    private Cache<String, Object> cache;
-
-    @PostConstruct
-    private void init() {
-        cache = CacheBuilder.newBuilder().maximumWeight(10000).expireAfterAccess(tokenExpires, TimeUnit.SECONDS).build();
-    }
-
+public class DefaultFileUploadService implements FileUploadService{
+    /**
+     * 删除文件
+     *
+     * @param path 文件路径
+     */
     @Override
-    public User getUser(String token) {
-        return (User) cache.getIfPresent(token);
+    public void delete(String path) {
 
-    }
-
-    @Override
-    public <T> T get(String key, Class<T> clazz) {
-        return (T) cache.getIfPresent(key);
-    }
-
-    @Override
-    public void put(String key, Object value) {
-        cache.put(key, value);
     }
 }

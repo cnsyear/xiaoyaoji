@@ -1,8 +1,3 @@
-package cn.xiaoyaoji.api.test;
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
  * 　　　　　　　┏┛┻━━━┛┻┓ + +
@@ -26,14 +21,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  *
+ * cn.xiaoyaoji.service.spi 默认实现
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/18
  */
-@SpringBootApplication(scanBasePackages = {"cn.xiaoyaoji"})
-public class TestApplication {
-    public static void main(String[] args) {
-        SpringApplicationBuilder builder = new SpringApplicationBuilder();
-        builder.sources(TestApplication.class);
-        builder.run(args);
-    }
-}
+package cn.xiaoyaoji.api.spii;

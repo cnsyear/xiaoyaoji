@@ -1,6 +1,4 @@
-package cn.xiaoyaoji.service.integration.cache;
-
-import cn.xiaoyaoji.service.biz.user.bean.User;
+package cn.xiaoyaoji.service.spi;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -24,18 +22,25 @@ import cn.xiaoyaoji.service.biz.user.bean.User;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
- * 需要提供实现类
  *
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/20
  */
-public interface CacheService{
+public interface EmailService {
+    /**
+     * 发送验证码
+     *
+     * @param code 验证码
+     * @param to   收件人
+     */
+    void sendCaptcha(String code, String to);
 
-    User getUser(String token);
-
-    <T> T get(String key, Class<T> clazz);
-
-    void put(String key, Object value);
+    /**
+     * 发送找回密码
+     *
+     * @param findPageURL 找回密码链接地址
+     * @param to          收件人
+     */
+    void sendFindPassword(String findPageURL, String to);
 
 }

@@ -5,7 +5,7 @@ import cn.xiaoyaoji.service.biz.doc.mapper.DocMapper;
 import cn.xiaoyaoji.service.biz.project.event.ProjectCreatedEvent;
 import cn.xiaoyaoji.service.common.AbstractCurdService;
 import cn.xiaoyaoji.service.common.DocType;
-import cn.xiaoyaoji.service.common.Message;
+import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
 import cn.xiaoyaoji.source.mapper.CurdMapper;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author: zhoujingjie

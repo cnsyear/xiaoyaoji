@@ -1,7 +1,6 @@
-package cn.xiaoyaoji.api.test;
+package cn.xiaoyaoji.service.spi;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import cn.xiaoyaoji.service.biz.user.bean.User;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -25,15 +24,18 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
+ * <p>
+ * 需要提供实现类
  *
  * @author: zhoujingjie
  * Date: 2018/9/19
  */
-@SpringBootApplication(scanBasePackages = {"cn.xiaoyaoji"})
-public class TestApplication {
-    public static void main(String[] args) {
-        SpringApplicationBuilder builder = new SpringApplicationBuilder();
-        builder.sources(TestApplication.class);
-        builder.run(args);
-    }
+public interface CacheService{
+
+    User getUser(String token);
+
+    <T> T get(String key, Class<T> clazz);
+
+    void put(String key, Object value);
+
 }

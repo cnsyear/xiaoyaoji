@@ -1,4 +1,4 @@
-package cn.xiaoyaoji;
+package cn.xiaoyaoji.api;
 
 
 import cn.xiaoyaoji.service.util.ConfigUtils;

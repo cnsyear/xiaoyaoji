@@ -1,24 +1,20 @@
 package cn.xiaoyaoji.api.controller;
 
-import cn.xiaoyaoji.api.extension.file.FileUtils;
-import cn.xiaoyaoji.api.extension.file.MetaData;
 import cn.xiaoyaoji.service.annotations.Ignore;
 import cn.xiaoyaoji.service.biz.doc.bean.DocAttachment;
 import cn.xiaoyaoji.service.biz.doc.service.DocAttachmentService;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.common.HashMapX;
 import cn.xiaoyaoji.service.common.Result;
+import cn.xiaoyaoji.service.spi.FileUploadService;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.ConfigUtils;
-import cn.xiaoyaoji.service.util.StringUtils;
-import com.google.common.html.HtmlEscapers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,10 +25,12 @@ import java.util.Set;
 @RestController
 @RequestMapping("/attach")
 public class AttachController {
-    @Value("#{${xyj.upload.excludes:}.split(',')}")
+    //@Value("#{${xyj.upload.excludes:,}.split(',')}")
     private Set<String> excludes;
     @Autowired
     private DocAttachmentService docAttachmentService;
+    @Autowired
+    private FileUploadService fileUploadService;
 
     @PostMapping
     public Object upload(@RequestParam("file") List<MultipartFile> files, @RequestParam String relateId, @RequestParam String projectId) throws IOException {
@@ -47,7 +45,7 @@ public class AttachController {
                 }
             }
         }
-        for (MultipartFile file : files) {
+        /*for (MultipartFile file : files) {
             MetaData md = FileUtils.upload(file);
             String path = md.getPath();
             DocAttachment temp = new DocAttachment();
@@ -60,7 +58,7 @@ public class AttachController {
             temp.setFileName(HtmlEscapers.htmlEscaper().escape(file.getOriginalFilename()));
             temp.setProjectId(projectId);
             docAttachmentService.insert(temp);
-        }
+        }*/
         return true;
     }
 
@@ -87,11 +85,7 @@ public class AttachController {
         DocAttachment docAttachment = docAttachmentService.findOne(id);
         AssertUtils.isTrue(docAttachment != null, "无效ID");
         int rs = docAttachmentService.deleteByPrimaryKey(id);
-        try {
-            FileUtils.delete(docAttachment.getUrl());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        fileUploadService.delete(docAttachment.getUrl());
         return true;
     }
 }

@@ -1,6 +1,6 @@
 package cn.xiaoyaoji.api.utils;
 
-import cn.xiaoyaoji.Config;
+import cn.xiaoyaoji.api.Config;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
