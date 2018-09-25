@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
  * @author: zhoujingjie
  * Date: 2018/9/20
  */
-@Component
 public class DefaultFileUploadService implements FileUploadService{
     /**
      * 删除文件

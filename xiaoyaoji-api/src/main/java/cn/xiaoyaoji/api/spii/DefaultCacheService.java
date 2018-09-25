@@ -40,7 +40,6 @@ import java.util.concurrent.TimeUnit;
  * @author: zhoujingjie
  * Date: 2018/9/19
  */
-@Component
 public class DefaultCacheService implements CacheService {
     private Logger logger = LoggerFactory.getLogger(getClass());
 

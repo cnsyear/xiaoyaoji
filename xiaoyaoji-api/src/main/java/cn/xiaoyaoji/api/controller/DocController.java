@@ -1,5 +1,6 @@
 package cn.xiaoyaoji.api.controller;
 
+import cn.xiaoyaoji.api.base.Session;
 import cn.xiaoyaoji.service.annotations.Ignore;
 import cn.xiaoyaoji.service.biz.doc.bean.DocHistory;
 import cn.xiaoyaoji.service.biz.doc.service.DocHistoryService;
@@ -167,16 +168,15 @@ public class DocController {
      */
     @GetMapping("{docId}")
     @Ignore
-    public Object docView(@PathVariable String docId,
-                          @RequestParam(value = "docHistoryId", required = false) String docHistoryId, User user,
-                          HttpServletRequest request,
-                          boolean editing
+    public Object getDetails(@PathVariable String docId,
+                          @RequestParam(value = "docHistoryId", required = false) String docHistoryId, @Session User user
     ) {
         //todo  检查是否有访问权限
         AssertUtils.notNull(docId, "参数丢失");
         Doc doc = null;
-        if (Strings.isNullOrEmpty(docHistoryId)) {
+        if (!Strings.isNullOrEmpty(docHistoryId)) {
             DocHistory history = docHistoryService.findOne(docHistoryId);
+            AssertUtils.notNull(history,"数据不存在");
             doc = new Doc();
             BeanUtils.copyProperties(history, doc);
             AssertUtils.isTrue(doc.getId().equals(docId), "数据无效");

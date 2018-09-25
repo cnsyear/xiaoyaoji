@@ -1,5 +1,6 @@
 package cn.xiaoyaoji.api;
 
+import cn.xiaoyaoji.api.spii.SpiRegistry;
 import cn.xiaoyaoji.service.ServiceConfig;
 import cn.xiaoyaoji.service.util.PluginUtils;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ import javax.servlet.ServletContext;
  * @author zhoujingjie
  * @date 2016-07-26
  */
-@Import(ServiceConfig.class)
+@Import({ServiceConfig.class, SpiRegistry.class})
 @SpringBootApplication(scanBasePackages = "cn.xiaoyaoji")
 public class Application {
     private static Logger logger = LoggerFactory.getLogger(Application.class);

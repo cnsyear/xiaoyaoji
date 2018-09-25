@@ -1,12 +1,15 @@
+set @now = now();
+update doc set createTime =ifnull(@now,createTime),lastUpdateTime = ifnull(@now,lastUpdateTime) where createTime is null or lastUpdateTime is null;
 ALTER TABLE `doc`
   MODIFY COLUMN `sort` int(11) NOT NULL DEFAULT 100 AFTER `name`,
   MODIFY COLUMN `content` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '内容' AFTER `type`,
-  MODIFY COLUMN `createTime` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAP AFTER `content`,
+  MODIFY COLUMN `createTime` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `content`,
   MODIFY COLUMN `lastUpdateTime` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) AFTER `createTime`,
-  MODIFY COLUMN `parentId` char(12) CHARACTER SET latin1 NOT NULL DEFAULT 0 AFTER `lastUpdateTime`,
-  MODIFY COLUMN `projectId` char(12) CHARACTER SET latin1 NOT NULL AFTER `parentId`,
+  MODIFY COLUMN `parentId` char(12) NOT NULL DEFAULT 0 AFTER `lastUpdateTime`,
   ADD COLUMN `status` int(1) NOT NULL DEFAULT 1 COMMENT '状态；1：有效；0：已删除' AFTER `projectId`,
   COMMENT = '文档表';
+
+
 
 update project_user set status = case
                                  when status='PENDING' then 1
@@ -25,7 +28,7 @@ update project_user set status = case
 
 ALTER TABLE project_user
   MODIFY COLUMN `createTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `userId`,
-  MODIFY COLUMN `status` int(0) NULL DEFAULT 'PENDING' COMMENT '1: 待接收；2：已接受；3：已拒绝' AFTER `createTime`,
+  MODIFY COLUMN `status` int(0) NULL DEFAULT 1 COMMENT '1: 待接收；2：已接受；3：已拒绝' AFTER `createTime`,
   MODIFY COLUMN `editable` int(1) NULL DEFAULT 1 COMMENT '是否可编辑；1：是；0：否' AFTER `status`,
   MODIFY COLUMN `commonlyUsed` integer(3) NULL DEFAULT 0 COMMENT '是否是常用；1：是；0：否' AFTER `editable`;
 
@@ -33,15 +36,15 @@ ALTER TABLE project_user
 
 
 update project set status =  case
-                          when status='VALID' then 1
-                          when status='INVALID' then 2
-                          when status='DELETED' then 3
-                          else 4
-                          end,
-                    permission = case
-                        when permission = 'PUBLIC' then 1
-                        else 0
-                        end;
+                             when status='VALID' then 1
+                             when status='INVALID' then 2
+                             when status='DELETED' then 3
+                             else 4
+                             end,
+  permission = case
+               when permission = 'PUBLIC' then 1
+               else 0
+               end;
 
 ALTER TABLE `project`
   DROP COLUMN `teamId`,
@@ -62,8 +65,8 @@ ALTER TABLE `share`
   MODIFY COLUMN `createTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `name`,
   MODIFY COLUMN `userId` char(12) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '用户id' AFTER `createTime`,
   MODIFY COLUMN `shareAll` integer(1) NULL DEFAULT NULL COMMENT '是否分享全部；1：是；0：否' AFTER `userId`,
-  MODIFY COLUMN `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分享密码' AFTER `shareAll`,
   MODIFY COLUMN `projectId` char(12) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `password`;
+
 
 
 update user set status = if(status='VALID',1,0);

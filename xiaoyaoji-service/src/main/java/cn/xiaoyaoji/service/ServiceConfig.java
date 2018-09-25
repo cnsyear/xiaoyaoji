@@ -1,6 +1,9 @@
 package cn.xiaoyaoji.service;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -41,6 +44,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @MapperScan(basePackages = "cn.xiaoyaoji.service.biz.*.mapper")
 @EnableAsync
 public class ServiceConfig {
+
+     /*@Value("${xyj.provider.cache}")
+    private String cacheServiceProvider;
+    @Autowired
+    private BeanDefinitionRegistry beanDefinitionRegistry;*/
     @Bean
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

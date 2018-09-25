@@ -1,15 +1,14 @@
 package cn.xiaoyaoji.service.biz.doc.service;
 
+import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.biz.doc.bean.Doc;
 import cn.xiaoyaoji.service.biz.doc.mapper.DocMapper;
 import cn.xiaoyaoji.service.biz.project.event.ProjectCreatedEvent;
 import cn.xiaoyaoji.service.common.AbstractCurdService;
 import cn.xiaoyaoji.service.common.DocType;
-import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
 import cn.xiaoyaoji.source.mapper.CurdMapper;
-import org.apache.ibatis.annotations.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,9 @@ import java.util.*;
  * @Date: 17/4/16
  */
 @Service
-public class DocService implements AbstractCurdService<Doc>{
+public class DocService implements AbstractCurdService<Doc> {
     private static Logger logger = LoggerFactory.getLogger(DocService.class);
-    @Mapper
+    @Autowired
     private DocMapper docMapper;
 
     @Autowired
@@ -251,6 +250,6 @@ public class DocService implements AbstractCurdService<Doc>{
     }
 
     public List<Doc> getProjectDocs(String projectId) {
-        return docMapper.selectDocsByProjectId(projectId,false);
+        return docMapper.selectDocsByProjectId(projectId, false);
     }
 }

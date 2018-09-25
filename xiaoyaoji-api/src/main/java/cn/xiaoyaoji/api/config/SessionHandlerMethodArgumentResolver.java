@@ -61,7 +61,7 @@ public class SessionHandlerMethodArgumentResolver implements HandlerMethodArgume
         }
         if (Strings.isNullOrEmpty(key)) {
             if (parameter.getParameterType().isAssignableFrom(User.class)) {
-                key = "token";
+                key = AppCts.TOKEN_NAME;
             } else {
                 key = parameter.getParameterName();
             }
@@ -69,6 +69,9 @@ public class SessionHandlerMethodArgumentResolver implements HandlerMethodArgume
         String keyValue = webRequest.getHeader(key);
         if (AppCts.TOKEN_NAME.equals(key)) {
             keyValue = key + ":" + keyValue;
+        }
+        if(keyValue == null){
+            return null;
         }
         return cacheService.get(keyValue, parameter.getParameterType());
     }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
  * @author zhoujingjie
  *         created on 2017/5/18
  */
-@Component
-@ConditionalOnProperty(value = "xyj.plugin.email.provider",havingValue = "cn.xiaoyaoji.api.spii.SendCloudEMailService")
 public class SendCloudEMailService implements EmailService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private static String TEMPLATE_URL = "http://sendcloud.sohu.com/webapi/mail.send_template.json";
