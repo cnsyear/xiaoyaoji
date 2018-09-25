@@ -38,9 +38,17 @@ public interface PluginService<T> {
     T register(String pluginId, T plugin);
 
     /**
+     * 注销插件
+     *
+     * @param pluginId 插件id
+     * @return true/false
+     */
+    T destroy(String pluginId);
+
+    /**
      * 获取插件类
      *
-     * @param pluginId  插件id
+     * @param pluginId 插件id
      * @return T
      */
     T getPlugin(String pluginId);
