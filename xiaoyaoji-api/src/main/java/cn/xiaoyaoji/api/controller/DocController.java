@@ -4,11 +4,12 @@ import cn.xiaoyaoji.api.base.Session;
 import cn.xiaoyaoji.service.annotations.Ignore;
 import cn.xiaoyaoji.service.biz.doc.bean.DocHistory;
 import cn.xiaoyaoji.service.biz.doc.service.DocHistoryService;
-import cn.xiaoyaoji.service.common.DocType;
+import cn.xiaoyaoji.service.biz.doc.view.DocType;
 import cn.xiaoyaoji.service.common.HashMapX;
 import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.plugin.PluginInfo;
 import cn.xiaoyaoji.service.plugin.PluginManager;
+import cn.xiaoyaoji.service.spi.ExportService;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
 import cn.xiaoyaoji.service.biz.doc.bean.Doc;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +49,8 @@ public class DocController {
     private DocHistoryService docHistoryService;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private ExportService exportService;
 
     /**
      * 新增

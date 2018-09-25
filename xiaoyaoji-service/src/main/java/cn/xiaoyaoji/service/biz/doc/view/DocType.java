@@ -1,4 +1,4 @@
-package cn.xiaoyaoji.service.common;
+package cn.xiaoyaoji.service.biz.doc.view;
 
 /**
  * 内容类型

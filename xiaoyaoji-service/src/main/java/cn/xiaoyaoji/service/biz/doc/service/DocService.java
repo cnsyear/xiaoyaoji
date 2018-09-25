@@ -5,7 +5,7 @@ import cn.xiaoyaoji.service.biz.doc.bean.Doc;
 import cn.xiaoyaoji.service.biz.doc.mapper.DocMapper;
 import cn.xiaoyaoji.service.biz.project.event.ProjectCreatedEvent;
 import cn.xiaoyaoji.service.common.AbstractCurdService;
-import cn.xiaoyaoji.service.common.DocType;
+import cn.xiaoyaoji.service.biz.doc.view.DocType;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
 import cn.xiaoyaoji.source.mapper.CurdMapper;

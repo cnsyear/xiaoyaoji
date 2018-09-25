@@ -2,6 +2,8 @@ package cn.xiaoyaoji.api.controller;
 
 import cn.xiaoyaoji.api.base.Session;
 import cn.xiaoyaoji.service.annotations.Ignore;
+import cn.xiaoyaoji.service.biz.doc.bean.Doc;
+import cn.xiaoyaoji.service.biz.doc.service.DocService;
 import cn.xiaoyaoji.service.biz.project.bean.Project;
 import cn.xiaoyaoji.service.biz.project.bean.ProjectUser;
 import cn.xiaoyaoji.service.biz.project.service.ProjectService;
@@ -10,20 +12,25 @@ import cn.xiaoyaoji.service.biz.project.service.ShareService;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.biz.user.service.UserService;
 import cn.xiaoyaoji.service.Message;
+import cn.xiaoyaoji.service.plugin.ExportPlugin;
 import cn.xiaoyaoji.service.plugin.PluginInfo;
 import cn.xiaoyaoji.service.plugin.PluginManager;
 import cn.xiaoyaoji.service.plugin.doc.DocExportPlugin;
 import cn.xiaoyaoji.service.plugin.doc.DocImportPlugin;
+import cn.xiaoyaoji.service.spi.ExportService;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 项目
@@ -42,6 +49,11 @@ public class ProjectController {
     private ShareService shareService;
     @Autowired
     private ProjectUserService projectUserService;
+    @Autowired
+    private ExportService exportService;
+    @Autowired
+    private DocService docService;
+
 
     @GetMapping("/{id}/info")
     public ModelAndView detailInfo(@PathVariable("id") String id, User user) {
@@ -78,21 +90,29 @@ public class ProjectController {
     /**
      * 导出
      *
-     * @param id   项目id
-     * @param user 当前登录用户
+     * @param id       项目id
+     * @param pluginId 插件id
+     * @param docId    文档id
+     * @param request  request
+     * @param response resp
+     * @param user     当前登录用户
      * @return pdfview
      */
     @Ignore
     @GetMapping(value = "/{id}/export/{pluginId}/do")
-    public void export(@PathVariable("id") String id, @PathVariable String pluginId, User user, HttpServletResponse response) throws IOException {
+    public void export(@PathVariable("id") String id, @PathVariable String pluginId,
+                       @RequestParam(name = "docId", required = false) String docId,
+                       User user,
+                       HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Project project = projectService.findOne(id);
         AssertUtils.notNull(project, Message.PROJECT_NOT_FOUND);
         //ServiceTool.checkUserHasAccessPermission(project, user);
         //todo 检查是否有项目权限
-        PluginInfo<DocExportPlugin> docExportPluginPluginInfo = PluginManager.getInstance().getExportPlugin(pluginId);
-        AssertUtils.notNull(docExportPluginPluginInfo, "不支持该操作");
-        docExportPluginPluginInfo.getPlugin().doExport(id, response);
+        ExportPlugin plugin = exportService.getPlugin(pluginId);
+        AssertUtils.notNull(plugin, "不支持该操作");
+        List<Doc> docs = Strings.isNullOrEmpty(docId) ? docService.getByProjectId(id, true) : docService.getByParentId(id, docId);
+        plugin.export(project, docs, request, response);
     }
 
     /**

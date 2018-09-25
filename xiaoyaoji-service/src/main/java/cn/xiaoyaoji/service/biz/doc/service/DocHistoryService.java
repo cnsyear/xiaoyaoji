@@ -6,7 +6,7 @@ import cn.xiaoyaoji.service.biz.doc.event.DocUpdatedEvent;
 import cn.xiaoyaoji.service.biz.doc.mapper.DocHistoryMapper;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.common.AbstractCurdService;
-import cn.xiaoyaoji.service.common.DocType;
+import cn.xiaoyaoji.service.biz.doc.view.DocType;
 import cn.xiaoyaoji.source.mapper.CurdMapper;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
