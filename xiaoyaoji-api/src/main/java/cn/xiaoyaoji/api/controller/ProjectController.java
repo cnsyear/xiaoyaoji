@@ -330,7 +330,7 @@ public class ProjectController {
      * @param userId userId
      * @param id     projectId
      */
-    @DeleteMapping("/{id}/pu/{userId}")
+    @DeleteMapping("/{id}/removeMember/{userId}")
     public int removeMember(@PathVariable("id") String id, @PathVariable("userId") String userId, @Session User user) {
         Project project = projectService.findOne(id);
         //todo 检查权限
@@ -349,7 +349,7 @@ public class ProjectController {
      * @param editable
      * @return
      */
-    @PostMapping("/{id}/pu/{userId}/{editable}")
+    @PostMapping("/{id}/user/{userId}/{editable}")
     @ResponseBody
     public int editProjectEditable(@PathVariable("id") String projectId, @PathVariable("userId") String userId, @PathVariable("editable") int editable,
                                    @Session User user) {

@@ -1,12 +1,12 @@
 ![LOGO](http://www.xiaoyaoji.cn/assets/img/logo/full.png)
 # 小幺鸡文档管理工具，支持富文本、markdown、http、websocket 及其在线测试
-## [在线演示地址demo](http://www.xiaoyaoji.cn/project/demo)
+### [在线演示地址demo](http://www.xiaoyaoji.cn/project/demo)
 
 ### [下载最新版本](https://github.com/zhoujingjie/xiaoyaoji/releases)
 
 ## 兼容性
 * 静态页系统暂时只兼容chrome，其他浏览器未测试。
-* 后端：jdk1.7 tomcat7  mariadb5.5
+* 后端：jdk1.8 tomcat8  mysql5.7
 
 ## [离线部署配置说明](http://www.xiaoyaoji.cn/doc/TxybXPTdx)
 
