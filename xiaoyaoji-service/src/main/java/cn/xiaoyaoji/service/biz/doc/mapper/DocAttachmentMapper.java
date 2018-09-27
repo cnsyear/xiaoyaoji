@@ -36,6 +36,12 @@ import java.util.List;
 @Mapper
 public interface DocAttachmentMapper extends CurdMapper<DocAttachment> {
 
-    @Select("select * from attachment where relatedId=#{docId} order by sort asc ,createtime asc")
+    /**
+     * 查询附件
+     *
+     * @param docId 文档id
+     * @return list
+     */
+    @Select("select id,fileName,type,url,sort from doc_attachment where relatedId=#{docId} order by sort asc ,createtime asc")
     List<DocAttachment> selectAttachmentsByDocId(String docId);
 }

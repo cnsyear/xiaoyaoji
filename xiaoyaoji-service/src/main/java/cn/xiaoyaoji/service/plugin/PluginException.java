@@ -1,6 +1,4 @@
-package cn.xiaoyaoji.service.spi;
-
-import cn.xiaoyaoji.service.biz.user.bean.User;
+package cn.xiaoyaoji.service.plugin;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -24,52 +22,27 @@ import cn.xiaoyaoji.service.biz.user.bean.User;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
- * 需要提供实现类
  *
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/27
  */
-public interface CacheService {
+public class PluginException extends RuntimeException{
+    public PluginException() {
+    }
 
-    /**
-     * 查询用户
-     *
-     * @param token token
-     * @return user
-     */
-    User getUser(String token);
+    public PluginException(String message) {
+        super(message);
+    }
 
-    /**
-     * 缓存用户
-     *
-     * @param token token
-     * @param user  user
-     */
-    void cacheUser(String token, User user);
+    public PluginException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    /**
-     * 获取key
-     *
-     * @param key
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    <T> T get(String key, Class<T> clazz);
+    public PluginException(Throwable cause) {
+        super(cause);
+    }
 
-    /**
-     * 设置key
-     *
-     * @param key
-     * @param value
-     */
-    void set(String key, Object value);
-
-    /**
-     * 删除key
-     *
-     * @param key
-     */
-    void remove(String key);
+    public PluginException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

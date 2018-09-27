@@ -1,10 +1,12 @@
 package cn.xiaoyaoji.service.biz.project.bean;
 
-import cn.xiaoyaoji.service.util.JsonUtils;
+import cn.xiaoyaoji.service.biz.doc.bean.Doc;
 
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 项目
@@ -15,14 +17,20 @@ import java.util.Date;
 @Table(name = "project")
 public class Project {
     private String id;
-    //项目名称
+    /**
+     * 项目名称
+     */
     private String name;
-    //简单描述
+    /**
+     * 简单描述
+     */
     private String description;
     private String userId;
     @Transient
     private String userName;
-    //创建时间
+    /**
+     * 创建时间
+     */
     private Date createTime;
     /**
      * 状态 ;1:有效;2:无效;3:已删除;4:已存档
@@ -32,9 +40,13 @@ public class Project {
      * 权限 1:公开;0:私有
      */
     private Integer permission;
-    //详细说明
+    /**
+     * 详细说明
+     */
     private String details;
-    //最后更新时间
+    /**
+     * 最后更新时间
+     */
     private Date lastUpdateTime;
     //是否可编辑
     @Transient
@@ -43,6 +55,17 @@ public class Project {
     @Transient
     private String commonlyUsed;
 
+
+    /**
+     * 文档列表、导入、导出的时候使用
+     */
+    @Transient
+    private List<Doc> docs = Collections.emptyList();
+    /**
+     * 全局项目对象。导入、导出的时候使用
+     */
+    @Transient
+    private ProjectGlobal projectGlobal;
 
     public String getId() {
         return id;
@@ -156,8 +179,19 @@ public class Project {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    @Override
-    public String toString() {
-        return JsonUtils.toString(this);
+    public List<Doc> getDocs() {
+        return docs;
+    }
+
+    public void setDocs(List<Doc> docs) {
+        this.docs = docs;
+    }
+
+    public ProjectGlobal getProjectGlobal() {
+        return projectGlobal;
+    }
+
+    public void setProjectGlobal(ProjectGlobal projectGlobal) {
+        this.projectGlobal = projectGlobal;
     }
 }

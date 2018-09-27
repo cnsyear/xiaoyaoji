@@ -1,7 +1,6 @@
 package cn.xiaoyaoji.service.biz.user.bean;
 
 import cn.xiaoyaoji.service.annotations.Ignore;
-import cn.xiaoyaoji.service.util.AvatarUtils;
 import cn.xiaoyaoji.service.util.JsonUtils;
 
 import javax.persistence.Table;
@@ -36,7 +35,6 @@ public class User implements Serializable {
 
     public interface Type {
         String USER = "USER";
-        String ADMIN = "ADMIN";
     }
 
     @Ignore
@@ -96,7 +94,7 @@ public class User implements Serializable {
     }
 
     public String getAvatar() {
-        return AvatarUtils.getAvatar(avatar);
+        return avatar;
     }
 
     public Integer getStatus() {

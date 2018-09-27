@@ -71,25 +71,28 @@ public class UserService implements AbstractCurdService<User> {
     }
 
 
+    /**
+     * 绑定第三方关丽娜
+     *
+     * @param userThirdParty 第三方对象
+     * @return 1
+     */
     public int bindUserWithThirdParty(UserThirdParty userThirdParty) {
         User user = userMapper.findOne(userThirdParty.getUserId());
         AssertUtils.notNull(user, "无效用户");
-        //检查是否绑定
-        userThirdPartyMapper.countMore(Criteria.build().eq("userId", user.getId()).eq("type", userThirdParty.getType()));
-        //todo 重新整理当前逻辑
-        return 0;
+        return userThirdPartyMapper.insertOrIgnore(userThirdParty);
     }
 
-    public User getByEmailPassword(String email,String password){
+    public User getByEmailPassword(String email, String password) {
         User user = userMapper.selectByEmail(email);
-        if(user != null && password.equals(user.getPassword())){
+        if (user != null && password.equals(user.getPassword())) {
             return user;
         }
         return null;
     }
 
-    public int deleteThirdly(String userId,String pluginId){
-        return userThirdPartyMapper.deleteType(userId,pluginId);
+    public int deleteThirdly(String userId, String pluginId) {
+        return userThirdPartyMapper.deleteType(userId, pluginId);
     }
 }
 

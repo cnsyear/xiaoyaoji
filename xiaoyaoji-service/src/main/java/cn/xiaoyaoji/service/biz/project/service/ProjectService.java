@@ -1,9 +1,12 @@
 package cn.xiaoyaoji.service.biz.project.service;
 
+import cn.xiaoyaoji.service.biz.doc.bean.Doc;
 import cn.xiaoyaoji.service.biz.doc.event.DocUpdatedEvent;
+import cn.xiaoyaoji.service.biz.doc.service.DocService;
 import cn.xiaoyaoji.service.biz.project.bean.Project;
 import cn.xiaoyaoji.service.biz.project.bean.ProjectGlobal;
 import cn.xiaoyaoji.service.biz.project.event.ProjectCreatedEvent;
+import cn.xiaoyaoji.service.biz.project.event.ProjectImportedEvent;
 import cn.xiaoyaoji.service.biz.project.mapper.ProjectMapper;
 import cn.xiaoyaoji.service.common.AbstractCurdService;
 import cn.xiaoyaoji.service.util.AssertUtils;
@@ -27,6 +30,10 @@ public class ProjectService implements AbstractCurdService<Project> {
     private ProjectMapper projectMapper;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private DocService docService;
+    @Autowired
+    private ProjectGlobalService projectGlobalService;
 
 
     /**
@@ -49,7 +56,7 @@ public class ProjectService implements AbstractCurdService<Project> {
 
     @Override
     public int insert(Project bean) {
-        int rs= projectMapper.insert(bean);
+        int rs = projectMapper.insert(bean);
         applicationEventPublisher.publishEvent(new ProjectCreatedEvent(bean));
         return rs;
     }
@@ -76,6 +83,7 @@ public class ProjectService implements AbstractCurdService<Project> {
         //删除分享
         return rs;
     }
+
     public List<Project> getProjectsByUserId(String userId, int status) {
         return projectMapper.selectByUserId(userId, status);
     }
@@ -83,6 +91,25 @@ public class ProjectService implements AbstractCurdService<Project> {
     @Override
     public CurdMapper<Project> getMapper() {
         return projectMapper;
+    }
+
+    /**
+     * 导入项目
+     *
+     * @param project 项目
+     * @param userId  用户id
+     * @return 包含id的项目对象
+     */
+    public Project importProject(Project project, String userId) {
+        //暂时不支持导入文档历史
+        String projectId = StringUtils.id();
+        project.setId(projectId);
+        project.setUserId(userId);
+        project.setStatus(1);
+        project.setPermission(0);
+        projectMapper.insert(project);
+        applicationEventPublisher.publishEvent(new ProjectImportedEvent(project));
+        return project;
     }
 }
 

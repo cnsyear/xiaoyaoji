@@ -1,6 +1,4 @@
-package cn.xiaoyaoji.service.spi;
-
-import cn.xiaoyaoji.service.biz.user.bean.User;
+package cn.xiaoyaoji.service.plugin;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -24,52 +22,71 @@ import cn.xiaoyaoji.service.biz.user.bean.User;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
- * 需要提供实现类
  *
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/27
  */
-public interface CacheService {
-
+public class LoginThirdParty {
     /**
-     * 查询用户
-     *
-     * @param token token
-     * @return user
+     * openid
      */
-    User getUser(String token);
-
+    private String openId;
     /**
-     * 缓存用户
-     *
-     * @param token token
-     * @param user  user
+     * 获取用户信息的时候需要
      */
-    void cacheUser(String token, User user);
-
+    private String accessToken;
     /**
-     * 获取key
-     *
-     * @param key
-     * @param clazz
-     * @param <T>
-     * @return
+     * 头像
      */
-    <T> T get(String key, Class<T> clazz);
-
+    private String logo;
     /**
-     * 设置key
-     *
-     * @param key
-     * @param value
+     * 昵称
      */
-    void set(String key, Object value);
+    private String nickName;
 
-    /**
-     * 删除key
-     *
-     * @param key
-     */
-    void remove(String key);
+    public LoginThirdParty() {
+    }
+
+    public LoginThirdParty(String openId, String logo, String nickName) {
+        this.openId = openId;
+        this.logo = logo;
+        this.nickName = nickName;
+    }
+
+    public LoginThirdParty(String openId, String accessToken) {
+        this.openId = openId;
+        this.accessToken = accessToken;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 }

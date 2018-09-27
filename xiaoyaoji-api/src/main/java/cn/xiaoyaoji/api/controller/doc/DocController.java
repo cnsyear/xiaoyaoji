@@ -1,4 +1,4 @@
-package cn.xiaoyaoji.api.controller;
+package cn.xiaoyaoji.api.controller.doc;
 
 import cn.xiaoyaoji.api.base.Session;
 import cn.xiaoyaoji.service.annotations.Ignore;
@@ -8,7 +8,6 @@ import cn.xiaoyaoji.service.biz.doc.view.DocType;
 import cn.xiaoyaoji.service.common.HashMapX;
 import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.plugin.PluginInfo;
-import cn.xiaoyaoji.service.plugin.PluginManager;
 import cn.xiaoyaoji.service.spi.ExportService;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
@@ -28,8 +27,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
@@ -205,14 +202,6 @@ public class DocController {
             //todo 检查是否有编辑权限
         }
 
-        List<PluginInfo> pluginInfos = PluginManager.getInstance().getPlugins(Event.DOC_EV);
-        PluginInfo pluginInfo = null;
-        for (PluginInfo info : pluginInfos) {
-            if (doc.getType().equals(info.getId())) {
-                pluginInfo = info;
-                break;
-            }
-        }
         return new HashMapX<>().append("doc", doc).append("editPermission", editPermission);
     }
 

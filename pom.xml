@@ -32,6 +32,7 @@
         <module>xiaoyaoji-service</module>
         <module>xiaoyaoji-api</module>
         <module>xiaoyaoji-commons-mapper</module>
+        <module>xiaoyaoji-login-plugin</module>
     </modules>
     <!--<repositories>
         <repository>

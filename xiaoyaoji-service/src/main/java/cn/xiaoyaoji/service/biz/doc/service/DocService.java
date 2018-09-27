@@ -3,12 +3,15 @@ package cn.xiaoyaoji.service.biz.doc.service;
 import cn.xiaoyaoji.service.Message;
 import cn.xiaoyaoji.service.biz.doc.bean.Doc;
 import cn.xiaoyaoji.service.biz.doc.mapper.DocMapper;
+import cn.xiaoyaoji.service.biz.project.bean.Project;
 import cn.xiaoyaoji.service.biz.project.event.ProjectCreatedEvent;
+import cn.xiaoyaoji.service.biz.project.event.ProjectImportedEvent;
 import cn.xiaoyaoji.service.common.AbstractCurdService;
 import cn.xiaoyaoji.service.biz.doc.view.DocType;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
 import cn.xiaoyaoji.source.mapper.CurdMapper;
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +39,31 @@ public class DocService implements AbstractCurdService<Doc> {
     }
 
 
+    /**
+     * 项目已创建事件
+     * @param event
+     */
     @org.springframework.context.event.EventListener(classes = ProjectCreatedEvent.class)
     protected void listenProjectCreatedEvent(ProjectCreatedEvent event) {
         createDefaultDoc(event.getProject().getId());
+    }
+
+    /**
+     * 项目已导入事件
+     * @param event
+     */
+    @org.springframework.context.event.EventListener(classes = ProjectImportedEvent.class)
+    protected void listenProjectImportedEvent(ProjectImportedEvent event) {
+        Project project = event.getProject();
+        if (project.getDocs().isEmpty()) {
+            createDefaultDoc(project.getId());
+        } else {
+            //以下代码应该解耦
+            //导入文档
+            project.getDocs().forEach(item -> {
+                importDoc(item, project.getId(), "0");
+            });
+        }
     }
 
 
@@ -65,6 +90,28 @@ public class DocService implements AbstractCurdService<Doc> {
         doc.setType(DocType.SYS_DOC_MD.getTypeName());
         int rs = docMapper.insert(doc);
         AssertUtils.isTrue(rs > 0, Message.OPER_ERR);
+        return doc;
+    }
+
+    /**
+     * 导入文档
+     *
+     * @param doc       文档对象
+     * @param projectId 项目id
+     * @param parentId  父级id
+     * @return 包含id的文档对象
+     */
+    public Doc importDoc(Doc doc, String projectId, String parentId) {
+        doc.setProjectId(projectId);
+        doc.setParentId(parentId);
+        if (Strings.isNullOrEmpty(doc.getType())) {
+            doc.setType(DocType.SYS_DOC_MD.getTypeName());
+        }
+        doc.setId(StringUtils.id());
+        createDoc(doc);
+        doc.getChildren().forEach(item -> {
+            importDoc(item, projectId, doc.getId());
+        });
         return doc;
     }
 

@@ -3,17 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>xiaoyaoji</artifactId>
-        <groupId>cn.com.xiaoyaoji</groupId>
-        <version>2.1.7</version>
+        <artifactId>xiaoyaoji-parent</artifactId>
+        <groupId>cn.xiaoyaoji</groupId>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>xiaoyaoji-login-plugin</artifactId>
     <dependencies>
         <dependency>
-            <groupId>cn.com.xiaoyaoji</groupId>
-            <artifactId>xiaoyaoji-biz</artifactId>
+            <groupId>cn.xiaoyaoji</groupId>
+            <artifactId>xiaoyaoji-service</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -1,6 +1,6 @@
-package cn.xiaoyaoji.service.spi;
+package cn.xiaoyaoji.service.biz.project.event;
 
-import cn.xiaoyaoji.service.biz.user.bean.User;
+import cn.xiaoyaoji.service.biz.project.bean.Project;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -24,52 +24,18 @@ import cn.xiaoyaoji.service.biz.user.bean.User;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
- * 需要提供实现类
  *
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/27
  */
-public interface CacheService {
+public class ProjectImportedEvent {
+    private Project project;
 
-    /**
-     * 查询用户
-     *
-     * @param token token
-     * @return user
-     */
-    User getUser(String token);
+    public ProjectImportedEvent(Project project) {
+        this.project = project;
+    }
 
-    /**
-     * 缓存用户
-     *
-     * @param token token
-     * @param user  user
-     */
-    void cacheUser(String token, User user);
-
-    /**
-     * 获取key
-     *
-     * @param key
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    <T> T get(String key, Class<T> clazz);
-
-    /**
-     * 设置key
-     *
-     * @param key
-     * @param value
-     */
-    void set(String key, Object value);
-
-    /**
-     * 删除key
-     *
-     * @param key
-     */
-    void remove(String key);
+    public Project getProject() {
+        return project;
+    }
 }

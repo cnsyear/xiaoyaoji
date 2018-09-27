@@ -1,6 +1,11 @@
-package cn.xiaoyaoji.service.spi;
+package cn.xiaoyaoji.service.plugin;
 
-import cn.xiaoyaoji.service.biz.user.bean.User;
+import cn.xiaoyaoji.service.biz.doc.bean.Doc;
+import cn.xiaoyaoji.service.biz.project.bean.Project;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -24,52 +29,26 @@ import cn.xiaoyaoji.service.biz.user.bean.User;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
- * 需要提供实现类
  *
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/27
  */
-public interface CacheService {
+public interface ImportPlugin {
 
     /**
-     * 查询用户
+     * 导入
      *
-     * @param token token
-     * @return user
+     * @param file 文件流
+     * @return 项目
      */
-    User getUser(String token);
+    Project importProject(InputStream file);
+
 
     /**
-     * 缓存用户
+     * 导入文档
      *
-     * @param token token
-     * @param user  user
+     * @param file 文件流
+     * @return 文档列表
      */
-    void cacheUser(String token, User user);
-
-    /**
-     * 获取key
-     *
-     * @param key
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    <T> T get(String key, Class<T> clazz);
-
-    /**
-     * 设置key
-     *
-     * @param key
-     * @param value
-     */
-    void set(String key, Object value);
-
-    /**
-     * 删除key
-     *
-     * @param key
-     */
-    void remove(String key);
+    List<Doc> importDocs(InputStream file);
 }

@@ -59,7 +59,7 @@ public class DefaultEmailService implements EmailService {
             email.addTo(to);
             email.setFrom(from, "系统管理员");
             email.setSubject("找回密码");
-            email.setHtmlMsg("<html><body><a href=\"" + findPageURL + "\">点击找回密码</a></body></html>");
+            email.setHtmlMsg("<html><body><a href=\"" + findPageURL + "\">点击找回小幺鸡密码</a></body></html>");
             email.setTextMsg("复制地址到浏览器上打开:" + findPageURL);
             email.send();
         } catch (EmailException e) {

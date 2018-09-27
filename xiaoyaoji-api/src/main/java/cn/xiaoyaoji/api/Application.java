@@ -5,8 +5,12 @@ import cn.xiaoyaoji.service.ServiceConfig;
 import cn.xiaoyaoji.service.util.PluginUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.event.EventListener;
 
 import javax.servlet.ServletContext;
 
@@ -19,10 +23,17 @@ import javax.servlet.ServletContext;
 public class Application {
     private static Logger logger = LoggerFactory.getLogger(Application.class);
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     //todo 清理回收站超过30天的项目
-    public static void started(ServletContext servletContext) {
-        //MessageBus.instance().register(new MessageNotify());
-        initializePlugins(servletContext);
+
+    /**
+     * 启动成功
+     */
+    @EventListener(classes = ApplicationStartedEvent.class)
+    public void started() {
+
     }
 
     /**
@@ -30,7 +41,7 @@ public class Application {
      *
      * @param servletContext
      */
-    private static void initializePlugins(ServletContext servletContext) {
+    /*private static void initializePlugins(ServletContext servletContext) {
         try {
             String outputURI = servletContext.getRealPath(PluginUtils.getPluginSourceDir());
 
@@ -43,7 +54,7 @@ public class Application {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-    }
+    }*/
 
 
 }

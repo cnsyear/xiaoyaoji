@@ -1,6 +1,10 @@
-package cn.xiaoyaoji.service.spi;
+package cn.xiaoyaoji.service.util;
 
-import cn.xiaoyaoji.service.biz.user.bean.User;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -24,52 +28,31 @@ import cn.xiaoyaoji.service.biz.user.bean.User;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
- * 需要提供实现类
  *
  * @author: zhoujingjie
- * Date: 2018/9/19
+ * Date: 2018/9/27
  */
-public interface CacheService {
-
+public class BeanUtils {
     /**
-     * 查询用户
-     *
-     * @param token token
-     * @return user
+     * 复制属性
+     * @param source
+     * @param target
      */
-    User getUser(String token);
+    public static void copyProperties(Object source,Object target){
+        org.springframework.beans.BeanUtils.copyProperties(source,target,getNullPropertyNames(source));
+    }
 
-    /**
-     * 缓存用户
-     *
-     * @param token token
-     * @param user  user
-     */
-    void cacheUser(String token, User user);
+    public static String[] getNullPropertyNames (Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
 
-    /**
-     * 获取key
-     *
-     * @param key
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    <T> T get(String key, Class<T> clazz);
+        Set<String> emptyNames = new HashSet<String>();
+        for(java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
+    }
 
-    /**
-     * 设置key
-     *
-     * @param key
-     * @param value
-     */
-    void set(String key, Object value);
-
-    /**
-     * 删除key
-     *
-     * @param key
-     */
-    void remove(String key);
 }

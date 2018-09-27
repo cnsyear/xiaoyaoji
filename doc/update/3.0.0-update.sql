@@ -73,3 +73,41 @@ update user set status = if(status='VALID',1,0);
 ALTER TABLE `user`
   MODIFY COLUMN `createtime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间' AFTER `email`,
   MODIFY COLUMN `status` int(1) NOT NULL DEFAULT 1 COMMENT '状态；1：有效；0：无效' AFTER `avatar`;
+
+
+ALTER TABLE `user_third`
+  CHANGE COLUMN `id` `thirdId` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '第三方主键' FIRST,
+  MODIFY COLUMN `userid` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id' AFTER `thirdId`,
+  MODIFY COLUMN `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '第三方类型' AFTER `userid`,
+  DROP PRIMARY KEY,
+  ADD PRIMARY KEY (`thirdId`) USING BTREE,
+  COMMENT = '第三方关联表';
+
+ALTER TABLE `user_third`
+  ADD COLUMN `id` int(0) NOT NULL AUTO_INCREMENT FIRST,
+  DROP PRIMARY KEY,
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  DROP INDEX `userId`,
+  ADD UNIQUE INDEX `userId`(`userid`, `type`, `thirdId`) USING BTREE;
+
+ALTER TABLE `user_third`
+  CHANGE COLUMN `userid` `userId` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id' AFTER `thirdId`;
+
+ALTER TABLE `attach`
+  MODIFY COLUMN `id` char(12) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '主键id' FIRST,
+  MODIFY COLUMN `url` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT 'url' AFTER `id`,
+  MODIFY COLUMN `type` varchar(45) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'FILE' COMMENT '文件类型' AFTER `url`,
+  MODIFY COLUMN `sort` int(11) NOT NULL DEFAULT 10 COMMENT '排序' AFTER `type`,
+  MODIFY COLUMN `relatedId` char(12) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '关联id' AFTER `sort`,
+  MODIFY COLUMN `fileName` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称' AFTER `relatedId`,
+  MODIFY COLUMN `createTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'c创建时间' AFTER `fileName`,
+  MODIFY COLUMN `projectId` char(12) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '项目id' AFTER `createTime`,
+  COMMENT = '文档附件表';
+
+alter table attach rename to doc_attachment;
+ALTER TABLE `doc_attachment`
+  DROP COLUMN `id`;
+
+ALTER TABLE `doc_attachment`
+  ADD COLUMN `id` int(0) NOT NULL AUTO_INCREMENT FIRST,
+  ADD PRIMARY KEY (`id`);

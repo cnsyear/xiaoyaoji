@@ -1,5 +1,7 @@
 package cn.xiaoyaoji.service.spi;
 
+import java.io.InputStream;
+
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
  * 　　　　　　　┏┛┻━━━┛┻┓ + +
@@ -34,4 +36,14 @@ public interface FileUploadService {
      * @param path 文件路径
      */
     void delete(String path);
+
+
+    /**
+     * 上传文件
+     *
+     * @param in
+     * @param contentType
+     * @return
+     */
+    String upload(InputStream in, String contentType);
 }

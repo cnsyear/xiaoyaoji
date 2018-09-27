@@ -7,7 +7,7 @@ import cn.xiaoyaoji.service.plugin.Plugin;
  * @author zhoujingjie
  *         created on 2017/6/21
  */
-public abstract class DocEvPlugin extends Plugin<DocEvPlugin> {
+public abstract class DocEvPlugin extends Plugin {
 
     public abstract String getEditPage();
 

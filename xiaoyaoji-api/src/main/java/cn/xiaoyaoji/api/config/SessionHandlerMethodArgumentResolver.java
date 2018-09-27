@@ -41,6 +41,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * Date: 2018/7/31
  */
 public class SessionHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
     private CacheService cacheService;
 
     public SessionHandlerMethodArgumentResolver(CacheService cacheService) {
@@ -70,9 +71,16 @@ public class SessionHandlerMethodArgumentResolver implements HandlerMethodArgume
         if (AppCts.TOKEN_NAME.equals(key)) {
             keyValue = key + ":" + keyValue;
         }
-        if(keyValue == null){
+        if (Strings.isNullOrEmpty(keyValue)) {
             return null;
         }
-        return cacheService.get(keyValue, parameter.getParameterType());
+        Object value = cacheService.get(keyValue, parameter.getParameterType());
+        if (value != null) {
+            return value;
+        }
+        if (session.required()) {
+            throw new IllegalArgumentException("required argument " + key);
+        }
+        return null;
     }
 }

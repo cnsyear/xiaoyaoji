@@ -12,15 +12,17 @@ import cn.xiaoyaoji.service.biz.project.service.ShareService;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.biz.user.service.UserService;
 import cn.xiaoyaoji.service.Message;
+import cn.xiaoyaoji.service.common.HashMapX;
 import cn.xiaoyaoji.service.plugin.ExportPlugin;
+import cn.xiaoyaoji.service.plugin.ImportPlugin;
 import cn.xiaoyaoji.service.plugin.PluginInfo;
-import cn.xiaoyaoji.service.plugin.PluginManager;
-import cn.xiaoyaoji.service.plugin.doc.DocExportPlugin;
 import cn.xiaoyaoji.service.plugin.doc.DocImportPlugin;
 import cn.xiaoyaoji.service.spi.ExportService;
+import cn.xiaoyaoji.service.spi.ImportService;
 import cn.xiaoyaoji.service.util.AssertUtils;
 import cn.xiaoyaoji.service.util.StringUtils;
 import com.google.common.base.Strings;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,45 +48,37 @@ public class ProjectController {
     @Autowired
     private UserService userService;
     @Autowired
-    private ShareService shareService;
-    @Autowired
     private ProjectUserService projectUserService;
     @Autowired
     private ExportService exportService;
     @Autowired
+    private ImportService importService;
+    @Autowired
     private DocService docService;
 
-
-    @GetMapping("/{id}/info")
-    public ModelAndView detailInfo(@PathVariable("id") String id, User user) {
-        Project project = projectService.findOne(id);
-        AssertUtils.notNull(project, Message.PROJECT_NOT_FOUND);
-        //todo 检查是否有项目权限
-        return new ModelAndView("/project/info")
-                .addObject("project", project)
-                .addObject("pageName", "info")
-                ;
-    }
-
+    /**
+     * 项目详情
+     *
+     * @param id 项目id
+     */
     @GetMapping("/{id}")
     public Object details(@PathVariable("id") String id) {
+        //todo 检查权限
         return projectService.findOne(id);
     }
 
     /**
      * 查询会员
      *
-     * @param id
-     * @param user
-     * @return
+     * @param id 项目id
+     * @return 成员列表
      */
     @GetMapping("/{id}/member")
-    public Object detailMember(@PathVariable("id") String id, User user) {
+    public Object getMembers(@PathVariable("id") String id, @Session User user) {
+        //todo 检查权限
         Project project = projectService.findOne(id);
         AssertUtils.notNull(project, Message.PROJECT_NOT_FOUND);
-        //ServiceTool.checkUserIsMember(project, user);
-        //todo 检查是否有项目权限
-        return userService.getByProjectId(id);
+        return new HashMapX<>().append("users", userService.getByProjectId(id));
     }
 
     /**
@@ -102,7 +96,7 @@ public class ProjectController {
     @GetMapping(value = "/{id}/export/{pluginId}/do")
     public void export(@PathVariable("id") String id, @PathVariable String pluginId,
                        @RequestParam(name = "docId", required = false) String docId,
-                       User user,
+                       @Session(required = false) User user,
                        HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Project project = projectService.findOne(id);
@@ -121,16 +115,18 @@ public class ProjectController {
      * @param user
      * @return
      */
-    @PostMapping(value = "/import")
-    public Object projectImport(String pluginId, User user,
-                                @RequestParam("file") MultipartFile file,
-                                @RequestParam(value = "projectId", required = false) String projectId,
-                                @RequestParam(value = "parentId", required = false) String parentId
+    @PostMapping(value = "/import/{pluginId}/do")
+    public Object projectImport(@PathVariable("pluginId") String pluginId, @Session User user,
+                                @RequestParam("file") MultipartFile file
     ) throws IOException {
-        PluginInfo<DocImportPlugin> docImportPluginPluginInfo = PluginManager.getInstance().getImportPlugin(pluginId);
-        AssertUtils.notNull(docImportPluginPluginInfo, "不支持该操作");
-        docImportPluginPluginInfo.getPlugin().doImport(file.getName(), file.getInputStream(), user.getId(), projectId, parentId);
-        return true;
+        ImportPlugin plugin = importService.getPlugin(pluginId);
+        AssertUtils.notNull(plugin, "无效插件" + pluginId);
+        Project project = plugin.importProject(file.getInputStream());
+        if (Strings.isNullOrEmpty(project.getName())) {
+            project.setName(FilenameUtils.getBaseName(file.getName()));
+        }
+        projectService.importProject(project, user.getId());
+        return project.getId();
     }
 
 
@@ -141,15 +137,10 @@ public class ProjectController {
      */
     @GetMapping("/list")
     public Object list(@Session User user, @RequestParam(value = "status", defaultValue = "1") int status) {
+
         return projectService.getProjectsByUserId(user.getId(), status);
     }
 
-
-    @GetMapping("/{id}/shares")
-    public Object shares(@PathVariable("id") String id) {
-
-        return shareService.getSharesByProjectId(id);
-    }
 
     /**
      * 设置是否常用项目
@@ -161,6 +152,7 @@ public class ProjectController {
     public int updateCommonlyUsed(@PathVariable("id") String id, @Session User user,
                                   @RequestParam int isCommonlyUsed
     ) {
+        ////todo 权限验证
         int rs = projectUserService.updateCommonlyUsed(id, user.getId(), isCommonlyUsed);
         AssertUtils.isTrue(rs > 0, "操作失败");
         return rs;
@@ -169,35 +161,37 @@ public class ProjectController {
     /**
      * 创建项目
      *
-     * @param user
-     * @param project
-     * @return
+     * @param project 项目对象
+     * @return 项目
      */
     @PostMapping
     public Object create(@Session User user, Project project) {
         project.setId(StringUtils.id());
         project.setUserId(user.getId());
         project.setStatus(1);
-        AssertUtils.notNull(project.getPermission(), "missing permission");
-        AssertUtils.notNull(project.getName(), "missing name");
+        if (project.getPermission() == null) {
+            project.setPermission(0);
+        }
+        if (Strings.isNullOrEmpty(project.getName())) {
+            project.setName("取个什么名字好呢?");
+        }
         int rs = projectService.insert(project);
-        return project;
+        return project.getId();
     }
 
 
     /**
      * 更新
      *
-     * @param id
-     * @return
+     * @param project 项目对象
      */
-    @PostMapping("{id}")
+    @PostMapping("/{id}")
     public Object update(@PathVariable("id") String id, @Session User user, Project project) {
         //todo 检查是否有编辑权限
         project.setId(id);
         int rs = projectService.updateSelective(project);
         AssertUtils.isTrue(rs > 0, Message.OPER_ERR);
-        return rs;
+        return project.getId();
     }
 
     /**
@@ -207,8 +201,7 @@ public class ProjectController {
      * @return
      */
     @PostMapping("/{id}/transfer")
-    @ResponseBody
-    public Object transfer(@PathVariable("id") String id, User user, @RequestParam String userId) {
+    public Object transfer(@PathVariable("id") String id, @Session User user, @RequestParam String userId) {
 
         AssertUtils.notNull(userId, "missing userId");
         //todo 检查是否是自己
@@ -228,8 +221,7 @@ public class ProjectController {
      * @return
      */
     @DeleteMapping("{id}")
-    @ResponseBody
-    public Object delete(@PathVariable("id") String id, User user) {
+    public Object delete(@PathVariable("id") String id, @Session User user) {
         Project before = projectService.findOne(id);
         AssertUtils.notNull(before, "无效请求");
         //todo 检查是否是自己项目
@@ -244,13 +236,10 @@ public class ProjectController {
     /**
      * 彻底删除
      *
-     * @param id
-     * @param user
-     * @return
+     * @param id 项目id
      */
     @DeleteMapping("/{id}/actual")
-    @ResponseBody
-    public Object deleteActual(@PathVariable("id") String id, User user) {
+    public Object deleteActual(@PathVariable("id") String id, @Session User user) {
         //todo 检查是否是自己项目
         int rs = projectService.deleteByPrimaryKey(id);
         AssertUtils.isTrue(rs > 0, Message.OPER_ERR);
@@ -260,12 +249,8 @@ public class ProjectController {
 
     /**
      * 邀请成员
-     *
-     * @param id
-     * @return
      */
     @PostMapping("/{id}/invite")
-    @ResponseBody
     public String invite(@PathVariable("id") String id, @Session User user, @RequestParam String userId) {
         //todo 检查是否有编辑权限
         ProjectUser pu = new ProjectUser();
@@ -285,9 +270,6 @@ public class ProjectController {
 
     /**
      * 邀请成员
-     *
-     * @param id
-     * @return
      */
     @PostMapping("/{id}/invite/email")
     @ResponseBody
@@ -315,8 +297,7 @@ public class ProjectController {
     /**
      * 接受邀请
      *
-     * @param inviteId
-     * @return
+     * @param inviteId 邀请id
      */
     @PostMapping("/{id}/pu/{inviteId}/accept")
     public int acceptInvite(@PathVariable("inviteId") String inviteId) {
@@ -348,10 +329,8 @@ public class ProjectController {
      *
      * @param userId userId
      * @param id     projectId
-     * @return
      */
     @DeleteMapping("/{id}/pu/{userId}")
-    @ResponseBody
     public int removeMember(@PathVariable("id") String id, @PathVariable("userId") String userId, @Session User user) {
         Project project = projectService.findOne(id);
         //todo 检查权限
@@ -385,15 +364,11 @@ public class ProjectController {
 
     /**
      * 退出项目
-     *
-     * @param id
-     * @return
      */
     @DeleteMapping("/{id}/quit")
-    @ResponseBody
     public int quit(@PathVariable("id") String id, @Session User user) {
         Project project = projectService.findOne(id);
-        AssertUtils.notNull(project, "project not exists");
+        AssertUtils.notNull(project, "项目不存在");
         AssertUtils.isTrue(!project.getUserId().equals(user.getId()), "项目所有人不能退出项目");
         int rs = projectUserService.delete(id, user.getId());
         AssertUtils.isTrue(rs > 0, Message.OPER_ERR);
@@ -418,5 +393,18 @@ public class ProjectController {
         int rs = projectService.updateSelective(temp);
         AssertUtils.isTrue(rs > 0, Message.OPER_ERR);
         return rs;
+    }
+
+
+    /**
+     * 查询跟自己相关的项目的用户
+     *
+     * @return 用户列表
+     */
+    @GetMapping("users")
+    public Object getAllProjectUsers(@Session User user) {
+        List<User> users = userService.getProjectRelationUser(user.getId());
+        return new HashMapX<>()
+                .append("users", users);
     }
 }

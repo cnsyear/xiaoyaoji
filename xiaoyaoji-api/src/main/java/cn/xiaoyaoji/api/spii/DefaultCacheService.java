@@ -1,11 +1,13 @@
 package cn.xiaoyaoji.api.spii;
 
+import cn.xiaoyaoji.service.XyjProperties;
 import cn.xiaoyaoji.service.biz.user.bean.User;
 import cn.xiaoyaoji.service.spi.CacheService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -43,20 +45,25 @@ import java.util.concurrent.TimeUnit;
 public class DefaultCacheService implements CacheService {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Value("${xyj.token.expires}")
-    private int tokenExpires;
+    @Autowired
+    private XyjProperties xyjProperties;
 
     private Cache<String, Object> cache;
 
     @PostConstruct
     private void init() {
-        cache = CacheBuilder.newBuilder().maximumSize(10000).expireAfterAccess(tokenExpires, TimeUnit.SECONDS).build();
+        cache = CacheBuilder.newBuilder().maximumSize(10000).expireAfterAccess(xyjProperties.getTokenExpires(), TimeUnit.SECONDS).build();
     }
 
     @Override
     public User getUser(String token) {
-        return (User) cache.getIfPresent(token);
+        return (User) cache.getIfPresent("user:" + token);
 
+    }
+
+    @Override
+    public void cacheUser(String token, User user) {
+        cache.put("user:"+token,user);
     }
 
     @Override
@@ -65,7 +72,17 @@ public class DefaultCacheService implements CacheService {
     }
 
     @Override
-    public void put(String key, Object value) {
+    public void set(String key, Object value) {
         cache.put(key, value);
+    }
+
+    /**
+     * 删除key
+     *
+     * @param key
+     */
+    @Override
+    public void remove(String key) {
+        cache.invalidate(key);
     }
 }

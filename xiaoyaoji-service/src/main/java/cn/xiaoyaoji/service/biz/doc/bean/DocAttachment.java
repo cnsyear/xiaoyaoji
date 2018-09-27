@@ -8,9 +8,10 @@ import java.util.Date;
  * @author: zhoujingjie
  * @Date: 17/4/24
  */
-@Table(name = "attach")
+@Table(name = "doc_attachment")
 public class DocAttachment implements Serializable {
-    private String id;
+
+    private Integer id;
     //地址
     private String url;
     //类型
@@ -29,11 +30,11 @@ public class DocAttachment implements Serializable {
     public DocAttachment() {
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

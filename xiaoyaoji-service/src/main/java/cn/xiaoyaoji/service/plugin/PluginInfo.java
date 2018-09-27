@@ -1,32 +1,57 @@
 package cn.xiaoyaoji.service.plugin;
 
 
-import java.io.File;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
+ * 插件信息
+ *
  * @author zhoujingjie
  *         created on 2017/5/18
  */
-public class PluginInfo<T extends Plugin>{
+public class PluginInfo {
+    /**
+     * 插件id
+     */
     private String id;
+    /**
+     * 插件名称
+     */
     private String name;
+    /**
+     * 插件描述
+     */
     private String description;
+    /**
+     * 作者
+     */
     private String author;
+    /**
+     * 创建时间
+     */
     private String createTime;
-    private String clazz;
+    /**
+     * 需要扫描的类
+     */
+    private List<String> classes;
+    /**
+     * 插件版本
+     */
     private String version;
     private String event;
+    /**
+     * 图标
+     */
     private Icon icon;
-    private T plugin;
+    /**
+     * 依赖的系统版本
+     */
     private Dependency dependency;
-    //运行时文件夹
-    private String runtimeFolder;
-
-    private Map<String,String> config;
-    //运行时目录
-    private File runtimeDirectory;
+    /**
+     * 配置信息
+     */
+    private Map<String, String> config;
 
     public String getId() {
         return id;
@@ -68,12 +93,12 @@ public class PluginInfo<T extends Plugin>{
         this.createTime = createTime;
     }
 
-    public String getClazz() {
-        return clazz;
+    public List<String> getClasses() {
+        return classes;
     }
 
-    public void setClazz(String clazz) {
-        this.clazz = clazz;
+    public void setClasses(List<String> classes) {
+        this.classes = classes;
     }
 
     public String getVersion() {
@@ -92,14 +117,6 @@ public class PluginInfo<T extends Plugin>{
         this.event = event;
     }
 
-    public T getPlugin() {
-        return plugin;
-    }
-
-    public void setPlugin(T plugin) {
-        this.plugin = plugin;
-    }
-
     public Icon getIcon() {
         return icon;
     }
@@ -108,54 +125,20 @@ public class PluginInfo<T extends Plugin>{
         this.icon = icon;
     }
 
-    public String getRuntimeFolder() {
-        return runtimeFolder;
-    }
-
-    public void setRuntimeFolder(String runtimeFolder) {
-        this.runtimeFolder = runtimeFolder;
-    }
-
-    public Map<String, String> getConfig() {
-        if(config == null){
-            config = new HashMap<>();
-        }
-        return config;
-    }
-
-    public void setConfig(Map<String, String> config) {
-        this.config = config;
-    }
-
-    public void setRuntimeDirectory(File runtimeDirectory) {
-        this.runtimeDirectory = runtimeDirectory;
-    }
-
-    public File getRuntimeDirectory() {
-        return runtimeDirectory;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PluginInfo<?> that = (PluginInfo<?>) o;
-
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
     public Dependency getDependency() {
         return dependency;
     }
 
     public void setDependency(Dependency dependency) {
         this.dependency = dependency;
+    }
+
+    public Map<String, String> getConfig() {
+        return config;
+    }
+
+    public void setConfig(Map<String, String> config) {
+        this.config = config;
     }
 }
 

@@ -1,27 +1,14 @@
 package cn.xiaoyaoji.service.util;
 
-import cn.xiaoyaoji.service.AppCts;
-import cn.xiaoyaoji.service.plugin.Dependency;
-import cn.xiaoyaoji.service.plugin.Plugin;
-import cn.xiaoyaoji.service.plugin.PluginInfo;
-import cn.xiaoyaoji.service.plugin.PluginManager;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.google.common.base.Strings;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.*;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author zhoujingjie
@@ -29,6 +16,7 @@ import java.util.Map;
  */
 public class PluginUtils {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(PluginUtils.class);
+   /*
     private static Map<String, PluginClassLoader> classLoaderMap = new HashMap<>();
 
     public static String getPluginDir() {
@@ -39,11 +27,11 @@ public class PluginUtils {
         return ConfigUtils.getProperty("xyj.plugin.source.dir", "/WEB-INF/plugins/");
     }
 
-    /**
+    *//**
      * 解压插件
      *
      * @param pluginDir 插件位置
-     */
+     *//*
     public static void extractPlugins(String pluginDir, String output) {
         File file = new File(pluginDir);
         if (!file.exists()) {
@@ -94,11 +82,11 @@ public class PluginUtils {
         logger.info("extract unzip " + pluginZip.getName() + " success");
     }
 
-    /**
+    *//**
      * 加载插件
      *
      * @param pluginSourceDirURI 已解压后的插件的位置
-     */
+     *//*
     public static void loadPlugins(String pluginSourceDirURI) {
         try {
             Path pluginPath = new File(pluginSourceDirURI).toPath();
@@ -242,7 +230,7 @@ public class PluginUtils {
         }
 
     }
-
+       */
     private static ClassLoader getParentClassLoader() {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         if (cl == null) {

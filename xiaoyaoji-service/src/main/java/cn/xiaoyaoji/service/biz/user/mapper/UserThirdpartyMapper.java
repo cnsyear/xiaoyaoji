@@ -3,6 +3,7 @@ package cn.xiaoyaoji.service.biz.user.mapper;
 import cn.xiaoyaoji.service.biz.user.bean.UserThirdParty;
 import cn.xiaoyaoji.source.mapper.CurdMapper;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -54,4 +55,14 @@ public interface UserThirdPartyMapper extends CurdMapper<UserThirdParty> {
      */
     @Delete("delete from thirdparty where userId={userId} and type=#{type}")
     int deleteType(String userId, String type);
+
+    /**
+     * 增加或者忽略
+     *
+     * @param userThirdParty 第三方对象
+     * @return int
+     */
+    @Insert("insert ignore into thirdparty(thirdId,userId,type) values(#{thirdId},#{userId},#{type})")
+    int insertOrIgnore(UserThirdParty userThirdParty);
+
 }

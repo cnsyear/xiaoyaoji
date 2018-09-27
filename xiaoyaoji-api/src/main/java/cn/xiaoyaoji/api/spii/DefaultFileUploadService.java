@@ -3,6 +3,8 @@ package cn.xiaoyaoji.api.spii;
 import cn.xiaoyaoji.service.spi.FileUploadService;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
+
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
  * 　　　　　　　┏┛┻━━━┛┻┓ + +
@@ -38,5 +40,10 @@ public class DefaultFileUploadService implements FileUploadService{
     @Override
     public void delete(String path) {
 
+    }
+
+    @Override
+    public String upload(InputStream in, String contentType) {
+        return null;
     }
 }
