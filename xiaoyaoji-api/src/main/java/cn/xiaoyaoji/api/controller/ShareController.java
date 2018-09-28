@@ -28,28 +28,13 @@ public class ShareController {
 
     @Autowired
     private ShareService shareService;
-    @Autowired
-    private DocService docService;
 
-
-    private List<Doc> getDocs(Share share) {
-        Set<String> tempSet = new HashSet<>(Arrays.asList(share.getDocIdsArray()));
-        List<Doc> projectDocs = docService.getProjectDocs(share.getProjectId());
-        //如果是查询全部则直接返回所有doc
-        if (Share.ShareAll.YES.equals(share.getShareAll())) {
-            return projectDocs;
-        }
-
-        List<Doc> resultDocs = new ArrayList<>(tempSet.size());
-        for (Doc item : projectDocs) {
-            if (tempSet.contains(item.getId())) {
-                resultDocs.add(item);
-            }
-        }
-        return resultDocs;
-    }
-
-
+    /**
+     * 查询项目的所有分享
+     * @param projectId
+     * @param user
+     * @return
+     */
     @GetMapping("/project/{projectId}")
     public Object getShares(@PathVariable("projectId") String projectId, @Session User user) {
         //todo 检查权限
