@@ -48,7 +48,7 @@ public class LoginController {
         AssertUtils.isTrue(user.getStatus().equals(1), "用户状态错误" + user.getStatus());
         String token = UUID.randomUUID().toString();
         user.setPassword(null);
-        cacheService.set(token, user);
+        cacheService.cacheUser(token, user);
         return new HashMapX<>()
                 .append("token", token)
                 .append("user", user);
