@@ -69,7 +69,7 @@ public class SessionHandlerMethodArgumentResolver implements HandlerMethodArgume
         }
         String keyValue = webRequest.getHeader(key);
         if (AppCts.TOKEN_NAME.equals(key)) {
-            keyValue = key + ":" + keyValue;
+            keyValue =  "user:" + keyValue;
         }
         if (Strings.isNullOrEmpty(keyValue)) {
             return null;
